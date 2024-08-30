@@ -11,6 +11,7 @@ html {
 }
 #desktop {
   height: 100%;
+  position: relative;
 
   background-image: url("file:///Users/use-itsl/Desktop/html_exepriments/assets/img/wallpaper.jpg");
   background-repeat: no-repeat;
@@ -33,7 +34,7 @@ html {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    border: 1px solid yellow;
+    border: 1px solid #4c3412;
   }
 }
 /* styles for terminal window*/

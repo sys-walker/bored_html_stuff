@@ -11,31 +11,40 @@
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/startmenu.css" />
   </head>
   <body>
     <div id="container-html">
       <div id="desktop">
-        <!-- <div class="terminal">
-          <div class="header-console">
-            <div class="buttons-slot">
-              <div class="dot red" onclick="closeWindow(this)"></div>
-              <div class="dot orange"></div>
-              <div class="dot green"></div>
+        <div id="startmenu">
+          <div id="searchbar">
+            <input type="text" placeholder="Search" />
+          </div>
+          <div id="startmenu-content">
+            <div id="sidemenu">
+              <div class="iconmenu">
+                <img src="assets/img/all.svg" />
+              </div>
+            </div>
+            <div id="sidemenu-list">
+              <div class="list-item">
+                <img src="assets/img/terminal.svg" />
+                <p>Terminal console</p>
+              </div>
             </div>
           </div>
-          <div class="console"></div>
-        </div> -->
+        </div>
       </div>
       <div id="taskbar">
         <div class="icon">
           <img src="assets/img/pencil-svgrepo-com.svg" style="height: 20px" />
         </div>
-        <div class="icon" onclick="runDraggable()">
+        <div class="icon" onclick="openConsole()">
           <img src="assets/img/terminal.svg" style="height: 30px" />
         </div>
       </div>
     </div>
     <!-- Scripts -->
-    <script src="assets/js/draggable.js"></script>
+    <script src="assets/js/terminal-console.js"></script>
   </body>
 </html>

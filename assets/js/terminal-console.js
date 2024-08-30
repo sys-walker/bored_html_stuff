@@ -1,4 +1,20 @@
-function runDraggable() {
+/*
+
+Create terminal console window with draggable functionality
+<div class="terminal">
+<div class="header-console">
+  <div class="buttons-slot">
+    <div class="dot red" onclick="closeWindow(this)"></div>
+    <div class="dot orange"></div>
+    <div class="dot green"></div>
+  </div>
+</div>
+<div class="console"></div>
+</div> 
+
+*/
+
+function openConsole() {
   var mousePosition;
   var offset = [0, 0];
   //var div;
