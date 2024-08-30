@@ -15,28 +15,9 @@
   </head>
   <body>
     <div id="container-html">
-      <div id="desktop">
-        <div id="startmenu">
-          <div id="searchbar">
-            <input type="text" placeholder="Search" />
-          </div>
-          <div id="startmenu-content">
-            <div id="sidemenu">
-              <div class="iconmenu">
-                <img src="assets/img/all.svg" />
-              </div>
-            </div>
-            <div id="sidemenu-list">
-              <div class="list-item">
-                <img src="assets/img/terminal.svg" />
-                <p>Terminal console</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div id="desktop"></div>
       <div id="taskbar">
-        <div class="icon">
+        <div class="icon" onclick="openStartMenu()">
           <img src="assets/img/pencil-svgrepo-com.svg" style="height: 20px" />
         </div>
         <div class="icon" onclick="openConsole()">
@@ -45,6 +26,9 @@
       </div>
     </div>
     <!-- Scripts -->
+     
     <script src="assets/js/terminal-console.js"></script>
+    <script src="assets/js/start-menu.js"></script>
+    <script src="assets/js/desktop.js"></script>
   </body>
 </html>

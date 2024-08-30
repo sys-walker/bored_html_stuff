@@ -13,6 +13,7 @@ Create terminal console window with draggable functionality
 </div> 
 
 */
+var positionTerminal = { top: 0, left: 0 };
 
 function openConsole() {
   var mousePosition;
@@ -20,20 +21,9 @@ function openConsole() {
   //var div;
   var isDown = false;
 
-  // div = document.createElement("div");
-  // div.style.position = "absolute";
-  // div.style.width = "100px";
-  // div.style.height = "100px";
-  // div.style.background = "red";
-  // div.style.color = "blue";
-  // div.style.cursor = "move"; // Set cursor to indicate draggability
-
-  //begin terminal window draggable
-
   let terminal = document.createElement("div");
   terminal.className = "terminal";
   terminal.style.position = "absolute";
-  // terminal.style.cursor = "move"; // Set cursor to indicate draggability
 
   let headerConsole = createHeaderConsole();
   let console = createTerminalConsole();
@@ -42,11 +32,6 @@ function openConsole() {
   terminal.appendChild(console);
   let desktop = document.getElementById("desktop");
   desktop.appendChild(terminal);
-
-  // //end create terminal window draggable
-
-  // let desktop = document.getElementById("desktop");
-  // desktop.appendChild(div);
 
   let div = terminal;
 
@@ -105,6 +90,39 @@ function closeWindow(param) {
   desktop.removeChild(terminal);
 }
 
+function getCurrentPsoition(terminal) {
+  let _top = 0,
+    _left = 0;
+  let element = terminal;
+  do {
+    _top += element.offsetTop;
+    _left += element.offsetLeft;
+    element = element.offsetParent;
+  } while (element);
+
+  return { top: _top + "px", left: _left + "px" };
+}
+
+function maximizeWindow(param) {
+  let terminal = param.parentNode.parentNode.parentNode;
+  const styles = window.getComputedStyle(terminal);
+
+  if (styles.position !== "absolute") {
+    terminal.style.position = "absolute";
+    terminal.style.top = positionTerminal.top;
+    terminal.style.left = positionTerminal.left;
+    terminal.style.height = "200px";
+    terminal.style.width = "300px";
+  } else {
+    positionTerminal = getCurrentPsoition(terminal);
+    terminal.style.position = ""; // Remove absolute positioning
+    terminal.style.top = ""; // Remove top positioning
+    terminal.style.left = ""; // Remove left positioning
+    terminal.style.height = "100%"; // Set height to 100%
+    terminal.style.width = "100%"; // Set width to 100%
+  }
+}
+
 function createHeaderConsole() {
   let headerConsole = document.createElement("div");
   headerConsole.className = "header-console";
@@ -125,6 +143,9 @@ function createHeaderConsole() {
 
   let greenDot = document.createElement("div");
   greenDot.className = "dot green";
+  greenDot.onclick = function () {
+    maximizeWindow(this);
+  };
   buttonsSlot.appendChild(greenDot);
 
   headerConsole.appendChild(buttonsSlot);
