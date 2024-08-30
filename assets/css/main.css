@@ -37,44 +37,4 @@ html {
     border: 1px solid #4c3412;
   }
 }
-/* styles for terminal window*/
-.terminal {
-  height: 200px;
-  width: 300px;
-  border: 1px solid #d2d2d2;
-  display: flex;
-  flex-direction: column;
-  border-radius: 15px;
-  overflow: hidden;
-  .console {
-    height: 100%;
-    width: 100%;
-    background-color: black;
-  }
-  .header-console {
-    height: 20px;
-    width: 100%;
-    background-color: #f5f7f3;
-  }
-}
-.buttons-slot {
-  display: flex;
-  flex-direction: row;
-  .dot {
-    --size: 10px;
-    width: var(--size);
-    height: var(--size);
-    border-radius: 50%;
-    margin: 5px;
-    background-color: aquamarine;
-  }
-  .red {
-    background-color: #ff5f56 !important;
-  }
-  .orange {
-    background-color: #ffbd2e !important;
-  }
-  .green {
-    background-color: #27c93f !important;
-  }
-}
+
