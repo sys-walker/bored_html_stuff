@@ -30,6 +30,11 @@ function openStartMenu() {
     desktop.removeChild(existStartMenu);
   } else {
     let startmenu = createStartMenu();
+    startmenu.addEventListener("click", function (event) {
+      event.stopPropagation();
+      //prevent close startmenu when click on it
+    });
+
     let desktop = document.getElementById("desktop");
     desktop.appendChild(startmenu);
   }
@@ -56,19 +61,27 @@ function createStartMenuContent() {
   let startmenuContent = document.createElement("div");
   startmenuContent.id = "startmenu-content";
   let sidemenu = createSideMenu();
-  let sidemenuList = createSideMenuList();
+  let sidemenuList = createSideMenuList('all');
   startmenuContent.appendChild(sidemenu);
   startmenuContent.appendChild(sidemenuList);
   return startmenuContent;
 }
 
-let allItems = ["all"];
-let allItemsList = [{ name: "Open Terminal", icon: "terminal" }];
+let allAppsCategories = ["all","system","config"];
+let allItemsList = [{ category:'system', name: "Open Terminal", icon: "terminal",action:openConsole },];
+
+
+function getAppByCategory(category) {
+  if (category === "all") return allItemsList;
+  return allItemsList.filter((item) => item.category === category);
+}
+
 function createSideMenu() {
   let sidemenu = document.createElement("div");
   sidemenu.id = "sidemenu";
   //multile items
-  allItems.forEach((item) => {
+  
+  allAppsCategories.forEach((item) => {
     let iconmenu = document.createElement("div");
     iconmenu.classList.add("iconmenu");
 
@@ -76,15 +89,22 @@ function createSideMenu() {
     img.src = `assets/img/${item}.svg`;
     iconmenu.appendChild(img);
     sidemenu.appendChild(iconmenu);
+    iconmenu.onclick = function () {
+      console.log("clicked: ",item);
+      changedCategory(item)
+    }
   });
   //end of items
   return sidemenu;
 }
-function createSideMenuList() {
+function createSideMenuList(category) {
   let sidemenulist = document.createElement("div");
   sidemenulist.id = "sidemenu-list";
   //multile items
-  allItemsList.forEach((item) => {
+
+  let selectedItems = getAppByCategory(category);
+
+  selectedItems.forEach((item) => {
     let listitem = document.createElement("div");
     listitem.classList.add("list-item");
     let img = document.createElement("img");
@@ -93,9 +113,24 @@ function createSideMenuList() {
     p.innerText = item.name;
     listitem.appendChild(img);
     listitem.appendChild(p);
+
+    listitem.onclick = function () {
+      item.action();
+    };
     sidemenulist.appendChild(listitem);
   });
 
   //end of items
   return sidemenulist;
+}
+
+function changedCategory(newCategory) {
+  
+  let startmenuContent = document.getElementById("startmenu-content");
+  let alreadyList = document.getElementById("sidemenu-list");
+  if (alreadyList) {
+    startmenuContent.removeChild(alreadyList);
+  }
+  let sidemenuList = createSideMenuList(newCategory); 
+  startmenuContent.appendChild(sidemenuList);
 }

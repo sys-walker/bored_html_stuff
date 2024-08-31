@@ -130,24 +130,42 @@ function createHeaderConsole() {
   let buttonsSlot = document.createElement("div");
   buttonsSlot.className = "buttons-slot";
 
-  let redDot = document.createElement("div");
-  redDot.className = "dot red";
-  redDot.onclick = function () {
-    closeWindow(this);
-  };
-  buttonsSlot.appendChild(redDot);
 
-  let orangeDot = document.createElement("div");
-  orangeDot.className = "dot orange";
-  buttonsSlot.appendChild(orangeDot);
 
+
+  // //Minimize button
+  // let orangeDot = document.createElement("div");
+  // orangeDot.className = "dot minimize";
+  // buttonsSlot.appendChild(orangeDot);
+
+  //Maximize button
   let greenDot = document.createElement("div");
-  greenDot.className = "dot green";
+  greenDot.className = "dot maxmize";
+  let ic = document.createElement("img");
+  ic.src = "assets/img/terminal/maximize.svg";
+  greenDot.appendChild(ic);
   greenDot.onclick = function () {
     maximizeWindow(this);
   };
-  buttonsSlot.appendChild(greenDot);
 
+    //Close button
+    let redDot = document.createElement("div");
+    ic = document.createElement("img");
+    ic.src = "assets/img/terminal/close.svg";
+    redDot.appendChild(ic);
+  
+    redDot.className = "dot close";
+    redDot.onclick = function () {
+      closeWindow(this);
+    };
+  
+
+  //l'ordre importa
+
+ 
+  buttonsSlot.appendChild(greenDot);
+  buttonsSlot.appendChild(redDot);
+  //buttonsSlot.appendChild(orangeDot);
   headerConsole.appendChild(buttonsSlot);
 
   return headerConsole;
