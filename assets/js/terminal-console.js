@@ -113,6 +113,7 @@ function maximizeWindow(param) {
     terminal.style.left = positionTerminal.left;
     terminal.style.height = "200px";
     terminal.style.width = "300px";
+    terminal.style.borderRadius = "15px";
   } else {
     positionTerminal = getCurrentPsoition(terminal);
     terminal.style.position = ""; // Remove absolute positioning
@@ -120,6 +121,7 @@ function maximizeWindow(param) {
     terminal.style.left = ""; // Remove left positioning
     terminal.style.height = "100%"; // Set height to 100%
     terminal.style.width = "100%"; // Set width to 100%
+    terminal.style.borderRadius = "0px"; // Set border radius
   }
 }
 
@@ -173,5 +175,38 @@ function createHeaderConsole() {
 function createTerminalConsole() {
   let console = document.createElement("div");
   console.className = "console";
+
+  //create last-login text
+  let lastloginContainer = document.createElement("div");
+  lastloginContainer.style.display = "flex";
+  lastloginContainer.style.flexDirection = "row";
+  lastloginContainer.style.flexWrap = "wrap";
+  
+
+
+  let text =`Last login ${getLastLogin()} on ttys004`
+  lastloginText = document.createElement("p");
+  lastloginText.style.color = "#4AF626";
+  lastloginText.style.margin = "0px";
+  lastloginText.style.fontFamily = "monospace";
+  
+  lastloginText.innerText = text;
+  lastloginContainer.appendChild(lastloginText);
+  
+   
+
+  console.appendChild(lastloginContainer);
+
   return console;
+}
+function getLastLogin(){
+  let lastLogin = storage_getItem("shell-login-date")
+  let newLogin = new Date().toString()
+  storage_setItem("shell-login-date",newLogin);
+  if(lastLogin){
+    return JSON.parse(lastLogin)
+  }else{
+    return newLogin
+  }
+  
 }

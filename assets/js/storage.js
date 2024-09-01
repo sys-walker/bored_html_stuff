@@ -1,4 +1,4 @@
-function setItem(key, value){
+function storage_setItem(key, value){
     if(typeof(key) !== 'string'){
         key = JSON.stringify(key)
     }
@@ -8,10 +8,10 @@ function setItem(key, value){
 
     localStorage.setItem(key, value);
 }
-function getItem(key){
+function storage_getItem(key){
     let value = localStorage.getItem(key);
     return value === null ? undefined : value;
 }
-function removeItem(key){
+function storage_removeItem(key){
     localStorage.removeItem(key);
 }
