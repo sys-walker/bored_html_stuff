@@ -175,28 +175,8 @@ function createHeaderConsole() {
 function createTerminalConsole() {
   let console = document.createElement("div");
   console.className = "console";
-
-  //create last-login text
-  let lastloginContainer = document.createElement("div");
-  lastloginContainer.style.display = "flex";
-  lastloginContainer.style.flexDirection = "row";
-  lastloginContainer.style.flexWrap = "wrap";
-  
-
-
-  let text =`Last login ${getLastLogin()} on ttys004`
-  lastloginText = document.createElement("p");
-  lastloginText.style.color = "#4AF626";
-  lastloginText.style.margin = "0px";
-  lastloginText.style.fontFamily = "monospace";
-  
-  lastloginText.innerText = text;
-  lastloginContainer.appendChild(lastloginText);
-  
-   
-
-  console.appendChild(lastloginContainer);
-
+  let  lastloginLine = createLastLoginLine()
+  console.appendChild(lastloginLine);
   return console;
 }
 function getLastLogin(){
@@ -204,9 +184,29 @@ function getLastLogin(){
   let newLogin = new Date().toString()
   storage_setItem("shell-login-date",newLogin);
   if(lastLogin){
-    return JSON.parse(lastLogin)
+    return lastLogin
   }else{
     return newLogin
   }
   
+}
+
+function createLastLoginLine(){
+  let lastloginContainer = document.createElement("div");
+  lastloginContainer.style.display = "flex";
+  lastloginContainer.style.flexDirection = "row";
+  lastloginContainer.style.flexWrap = "wrap";
+
+  lastloginContainer.innerHTML = `
+    <p
+      style="
+        color:#4AF626;
+        margin:0px;
+        font-family:'monospace'
+      "
+    
+    >Last login ${getLastLogin()} on ttys004</p>
+  
+  `
+  return lastloginContainer
 }
