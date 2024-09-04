@@ -1,17 +1,16 @@
-function storage_setItem(key, value){
-    if(typeof(key) !== 'string'){
-        key = JSON.stringify(key)
-    }
-    if (typeof (value) !== 's') {
-        value = JSON.stringify(value);
-    }
+function storage_setItem(key, value) {
+  localStorage.setItem(
+    key,
+    JSON.stringify({
+      value: value,
+    })
+  );
+}
+function storage_getItem(key) {
+  let jsonValue = localStorage.getItem(key);
 
-    localStorage.setItem(key, value);
+  return jsonValue ? JSON.parse(jsonValue).value : undefined;
 }
-function storage_getItem(key){
-    let value = localStorage.getItem(key);
-    return value === null ? undefined : value;
-}
-function storage_removeItem(key){
-    localStorage.removeItem(key);
+function storage_removeItem(key) {
+  localStorage.removeItem(key);
 }
