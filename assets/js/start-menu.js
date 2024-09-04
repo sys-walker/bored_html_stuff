@@ -24,6 +24,19 @@
     </div>
 </div>
 */
+
+let allAppsCategories = ['all', 'system', 'config'];
+let allItemsList = [
+  { category: 'system', name: 'Open Terminal', icon: 'terminal', action: openConsole, args: [] },
+  {
+    category: 'config',
+    name: 'Open Open Empty window',
+    icon: 'config',
+    action: openGenericWindow,
+    args: ['Generic window'],
+  },
+];
+
 function openStartMenu() {
   let existStartMenu = document.getElementById('startmenu');
   if (existStartMenu) {
@@ -66,9 +79,6 @@ function createStartMenuContent() {
   startmenuContent.appendChild(sidemenuList);
   return startmenuContent;
 }
-
-let allAppsCategories = ['all', 'system', 'config'];
-let allItemsList = [{ category: 'system', name: 'Open Terminal', icon: 'terminal', action: openConsole }];
 
 function getAppByCategory(category) {
   if (category === 'all') return allItemsList;
@@ -114,7 +124,7 @@ function createSideMenuList(category) {
     listitem.appendChild(p);
 
     listitem.onclick = function () {
-      item.action();
+      item.action.apply(null, item.args);
     };
     sidemenulist.appendChild(listitem);
   });
