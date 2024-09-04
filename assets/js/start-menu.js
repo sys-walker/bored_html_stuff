@@ -25,23 +25,23 @@
 </div>
 */
 function openStartMenu() {
-  let existStartMenu = document.getElementById("startmenu");
+  let existStartMenu = document.getElementById('startmenu');
   if (existStartMenu) {
     desktop.removeChild(existStartMenu);
   } else {
     let startmenu = createStartMenu();
-    startmenu.addEventListener("click", function (event) {
+    startmenu.addEventListener('click', function (event) {
       event.stopPropagation();
       //prevent close startmenu when click on it
     });
 
-    let desktop = document.getElementById("desktop");
+    let desktop = document.getElementById('desktop');
     desktop.appendChild(startmenu);
   }
 }
 function createStartMenu() {
-  let startmenu = document.createElement("div");
-  startmenu.id = "startmenu";
+  let startmenu = document.createElement('div');
+  startmenu.id = 'startmenu';
   let searchbar = createSearchBar();
   let startmenuContent = createStartMenuContent();
   startmenu.appendChild(searchbar);
@@ -49,17 +49,17 @@ function createStartMenu() {
   return startmenu;
 }
 function createSearchBar() {
-  let searchbar = document.createElement("div");
-  searchbar.id = "searchbar";
-  let input = document.createElement("input");
-  input.type = "text";
-  input.placeholder = "Search";
+  let searchbar = document.createElement('div');
+  searchbar.id = 'searchbar';
+  let input = document.createElement('input');
+  input.type = 'text';
+  input.placeholder = 'Search';
   searchbar.appendChild(input);
   return searchbar;
 }
 function createStartMenuContent() {
-  let startmenuContent = document.createElement("div");
-  startmenuContent.id = "startmenu-content";
+  let startmenuContent = document.createElement('div');
+  startmenuContent.id = 'startmenu-content';
   let sidemenu = createSideMenu();
   let sidemenuList = createSideMenuList('all');
   startmenuContent.appendChild(sidemenu);
@@ -67,49 +67,48 @@ function createStartMenuContent() {
   return startmenuContent;
 }
 
-let allAppsCategories = ["all","system","config"];
-let allItemsList = [{ category:'system', name: "Open Terminal", icon: "terminal",action:openConsole },];
-
+let allAppsCategories = ['all', 'system', 'config'];
+let allItemsList = [{ category: 'system', name: 'Open Terminal', icon: 'terminal', action: openConsole }];
 
 function getAppByCategory(category) {
-  if (category === "all") return allItemsList;
+  if (category === 'all') return allItemsList;
   return allItemsList.filter((item) => item.category === category);
 }
 
 function createSideMenu() {
-  let sidemenu = document.createElement("div");
-  sidemenu.id = "sidemenu";
+  let sidemenu = document.createElement('div');
+  sidemenu.id = 'sidemenu';
   //multile items
-  
-  allAppsCategories.forEach((item) => {
-    let iconmenu = document.createElement("div");
-    iconmenu.classList.add("iconmenu");
 
-    let img = document.createElement("img");
+  allAppsCategories.forEach((item) => {
+    let iconmenu = document.createElement('div');
+    iconmenu.classList.add('iconmenu');
+
+    let img = document.createElement('img');
     img.src = `assets/img/${item}.svg`;
     iconmenu.appendChild(img);
     sidemenu.appendChild(iconmenu);
     iconmenu.onclick = function () {
-      console.log("clicked: ",item);
-      changedCategory(item)
-    }
+      console.log('clicked: ', item);
+      changedCategory(item);
+    };
   });
   //end of items
   return sidemenu;
 }
 function createSideMenuList(category) {
-  let sidemenulist = document.createElement("div");
-  sidemenulist.id = "sidemenu-list";
+  let sidemenulist = document.createElement('div');
+  sidemenulist.id = 'sidemenu-list';
   //multile items
 
   let selectedItems = getAppByCategory(category);
 
   selectedItems.forEach((item) => {
-    let listitem = document.createElement("div");
-    listitem.classList.add("list-item");
-    let img = document.createElement("img");
+    let listitem = document.createElement('div');
+    listitem.classList.add('list-item');
+    let img = document.createElement('img');
     img.src = `assets/img/${item.icon}.svg`;
-    let p = document.createElement("p");
+    let p = document.createElement('p');
     p.innerText = item.name;
     listitem.appendChild(img);
     listitem.appendChild(p);
@@ -125,12 +124,11 @@ function createSideMenuList(category) {
 }
 
 function changedCategory(newCategory) {
-  
-  let startmenuContent = document.getElementById("startmenu-content");
-  let alreadyList = document.getElementById("sidemenu-list");
+  let startmenuContent = document.getElementById('startmenu-content');
+  let alreadyList = document.getElementById('sidemenu-list');
   if (alreadyList) {
     startmenuContent.removeChild(alreadyList);
   }
-  let sidemenuList = createSideMenuList(newCategory); 
+  let sidemenuList = createSideMenuList(newCategory);
   startmenuContent.appendChild(sidemenuList);
 }
