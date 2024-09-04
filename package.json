@@ -1,0 +1,11 @@
+{
+  "name": "boredstuff",
+  "version": "0.0.1",
+  "author": "sys-walker",
+  "scripts": {
+    "start": "python3 -m http.server",
+    "pretty": "npx prettier --check ./",
+    "pretty:check": "npx prettier --check ./",
+    "pretty:write": "npx prettier --write ./"
+  }
+}
