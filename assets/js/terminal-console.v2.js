@@ -17,13 +17,15 @@ function openConsole2() {
   let windowApp = createWindow('llllll');
   let desktop = document.getElementById('desktop');
 
-  //remove the default window-content
+  //remove the default window-content (Will disable draggability)
   let wContent = windowApp.querySelector('.window-content');
   windowApp.removeChild(wContent);
 
-  //create terminal console
   let wconsole = _createTerminalConsole();
   windowApp.appendChild(wconsole);
+
+  //re-enable draggability
+  setDraggable(windowApp);
 
   desktop.appendChild(windowApp);
 }
