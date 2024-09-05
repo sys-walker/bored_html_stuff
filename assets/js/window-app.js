@@ -31,6 +31,7 @@ function createWindow(appTitle) {
   windowApp.appendChild(windowContent);
   return windowApp;
 }
+
 function createWindowHeader(appTitle) {
   let windowHeader = document.createElement('div');
   windowHeader.className = 'window-header';
