@@ -12,6 +12,8 @@
   <div class="window-content"></div>
 </div>
 */
+
+//Generic method scheme to create a window app
 function openGenericWindow(appTitle) {
   let windowApp = createWindow(appTitle);
   let desktop = document.getElementById('desktop');
@@ -19,7 +21,9 @@ function openGenericWindow(appTitle) {
 
   setDraggable(windowApp);
 }
+//Generic method scheme to create a window app
 function createWindow(appTitle) {
+  //Must to reimplement this method to create a window app
   let windowApp = document.createElement('div');
   windowApp.className = 'window-app';
   windowApp.style.position = 'absolute';

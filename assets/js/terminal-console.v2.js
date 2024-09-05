@@ -14,15 +14,17 @@ Create terminal console window with draggable functionality
 
 */
 function openConsole() {
-  let windowApp = createTerminalWindow('Terminal 2');
+  let windowApp = _createTerminalWindow('Terminal console');
   let desktop = document.getElementById('desktop');
   desktop.appendChild(windowApp);
 }
 
-function createTerminalWindow(appTitle) {
+function _createTerminalWindow(appTitle) {
   let windowApp = document.createElement('div');
   windowApp.className = 'window-app';
   windowApp.style.position = 'absolute';
+  windowApp.style.setProperty('--initial-window-height', '200px');
+  windowApp.style.setProperty('--initial-window-width', '350px');
 
   let windowHeader = createWindowHeader(appTitle);
   let windowContent = _createTerminalConsole();
