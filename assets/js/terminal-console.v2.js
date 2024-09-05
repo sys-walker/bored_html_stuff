@@ -13,21 +13,25 @@ Create terminal console window with draggable functionality
 </div> 
 
 */
-function openConsole2() {
-  let windowApp = createWindow('llllll');
+function openConsole() {
+  let windowApp = createTerminalWindow('Terminal 2');
   let desktop = document.getElementById('desktop');
-
-  //remove the default window-content (Will disable draggability)
-  let wContent = windowApp.querySelector('.window-content');
-  windowApp.removeChild(wContent);
-
-  let wconsole = _createTerminalConsole();
-  windowApp.appendChild(wconsole);
-
-  //re-enable draggability
-  setDraggable(windowApp);
-
   desktop.appendChild(windowApp);
+}
+
+function createTerminalWindow(appTitle) {
+  let windowApp = document.createElement('div');
+  windowApp.className = 'window-app';
+  windowApp.style.position = 'absolute';
+
+  let windowHeader = createWindowHeader(appTitle);
+  let windowContent = _createTerminalConsole();
+
+  windowApp.appendChild(windowHeader);
+  windowApp.appendChild(windowContent);
+
+  setDraggable(windowApp);
+  return windowApp;
 }
 
 function _createTerminalConsole() {
@@ -76,5 +80,3 @@ function _getLastLogin() {
   storage_setItem('shell-login-date', newLogin);
   return lastLogin ? lastLogin : newLogin;
 }
-
-openConsole2();
