@@ -97,7 +97,7 @@ function _writableTerminal(consoleContent) {
     consoleContent.onkeydown = function (e) {
       if (e.key === 'Enter') {
         // completeLine,originalALstLogin,this.parentElement,consoleContent
-  
+
         switch (completeLine) {
           case 'clear':
             consoleContent.innerHTML = '';
@@ -106,6 +106,16 @@ function _writableTerminal(consoleContent) {
           case 'exit':
             let desktop = document.getElementById('desktop');
             desktop.removeChild(this.parentElement);
+          case 'uptime':
+            let currentDate = getDate({
+              hour: 'numeric',
+              minute: 'numeric',
+              second: 'numeric',
+              hour12: false,
+            });
+            let uptime = getUptime();
+            printLineTerminal(`${currentDate} up ${uptime}`, consoleContent, consoleContent.innerHTML);
+            originalALstLogin = consoleContent.innerHTML;
             break;
           case '':
             break;
