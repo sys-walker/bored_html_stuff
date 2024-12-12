@@ -1,21 +1,22 @@
-function getTimestampInSeconds() {
+import { Storage } from './_storage.js';
+export function getTimestampInSeconds() {
   return Math.floor(Date.now() / 1000);
 }
 
-function saveBootTime() {
-  let bootTime = storage_getItem('boot-time');
+export function saveBootTime() {
+  let bootTime = Storage.getItem('boot-time');
   if (!bootTime) {
     bootTime = getTimestampInSeconds();
-    storage_setItem('boot-time', bootTime);
+    Storage.setItem('boot-time', bootTime);
     console.debug('saved boot time');
   } else {
     console.debug('already sdaved boot time');
   }
 }
 
-function getUptime() {
+export function getUptime() {
   let currentTime = getTimestampInSeconds();
-  let bootTime = storage_getItem('boot-time');
+  let bootTime = Storage.getItem('boot-time');
   if (!bootTime) {
     bootTime = currentTime;
   }

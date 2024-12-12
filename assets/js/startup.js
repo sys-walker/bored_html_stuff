@@ -1,3 +1,5 @@
+import { autoHideElements } from './imports/_desktop.js';
+import { saveBootTime, getUptime } from './imports/_system.js';
 function getDate(dateOptions) {
   if (dateOptions === undefined) {
     dateOptions = {
@@ -26,4 +28,6 @@ document.body.onload = function () {
   saveBootTime();
   console.log(getUptime());
   setDesktopClock();
+
+  autoHideElements();
 };
