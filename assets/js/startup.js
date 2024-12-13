@@ -28,6 +28,5 @@ document.body.onload = function () {
   saveBootTime();
   console.log(getUptime());
   setDesktopClock();
-
   autoHideElements();
 };

@@ -1,3 +1,5 @@
+import { openConsole } from './imports/_terminal-console.v2.js';
+import { openGenericWindow } from './imports/_window-app.js';
 /*
 
  <div id="startmenu">
@@ -142,3 +144,7 @@ function changedCategory(newCategory) {
   let sidemenuList = createSideMenuList(newCategory);
   startmenuContent.appendChild(sidemenuList);
 }
+
+//calls from startmenu accessible from body HTML
+window.openStartMenu = openStartMenu;
+window.openConsole = openConsole;

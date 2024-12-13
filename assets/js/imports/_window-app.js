@@ -14,7 +14,7 @@
 */
 
 //Generic method scheme to create a window app
-function openGenericWindow(appTitle) {
+export function openGenericWindow(appTitle) {
   let windowApp = createWindow(appTitle);
   let desktop = document.getElementById('desktop');
   desktop.appendChild(windowApp);
@@ -22,7 +22,7 @@ function openGenericWindow(appTitle) {
   setDraggable(windowApp);
 }
 //Generic method scheme to create a window app
-function createWindow(appTitle) {
+export function createWindow(appTitle) {
   //Must to reimplement this method to create a window app
   let windowApp = document.createElement('div');
   windowApp.className = 'window-app';
@@ -36,7 +36,7 @@ function createWindow(appTitle) {
   return windowApp;
 }
 
-function createWindowHeader(appTitle) {
+export function createWindowHeader(appTitle) {
   let windowHeader = document.createElement('div');
   windowHeader.className = 'window-header';
   let windowTitle = createWindowTitle(appTitle);
@@ -47,12 +47,12 @@ function createWindowHeader(appTitle) {
   windowHeader.appendChild(windowsButtons);
   return windowHeader;
 }
-function createWindowContent() {
+export function createWindowContent() {
   let windowContent = document.createElement('div');
   windowContent.className = 'window-content';
   return windowContent;
 }
-function createWindowTitle(appTitle) {
+export function createWindowTitle(appTitle) {
   let windowTitle = document.createElement('div');
   windowTitle.className = 'window-title';
   if (typeof appTitle === 'string') {
@@ -63,7 +63,7 @@ function createWindowTitle(appTitle) {
 
   return windowTitle;
 }
-function createWindowButtons() {
+export function createWindowButtons() {
   let buttonsSlot = document.createElement('div');
   buttonsSlot.className = 'window-buttons';
 
@@ -96,13 +96,13 @@ function createWindowButtons() {
 
   return buttonsSlot;
 }
-function closeWindow(param) {
+export function closeWindow(param) {
   let terminal = param.parentNode.parentNode.parentNode;
   let desktop = document.getElementById('desktop');
   desktop.removeChild(terminal);
 }
 
-function maximizeWindow(param) {
+export function maximizeWindow(param) {
   let terminal = param.parentNode.parentNode.parentNode;
   const styles = window.getComputedStyle(terminal);
 
@@ -118,7 +118,7 @@ function maximizeWindow(param) {
     terminal.style.width = initialWindowWidth;
     terminal.style.borderRadius = windowBorderRadius;
   } else {
-    positionTerminal = _getCurrentPsoition(terminal, param);
+    _positionTerminal = _getCurrentPsoition(terminal, param);
     terminal.style.position = ''; // Remove absolute positioning
     terminal.style.top = ''; // Remove top positioning
     terminal.style.left = ''; // Remove left positioning
@@ -127,9 +127,9 @@ function maximizeWindow(param) {
     terminal.style.borderRadius = '0px'; // Set border radius
   }
 }
-var _positionTerminal = { top: 0, left: 0 };
+export  var _positionTerminal = { top: 0, left: 0 };
 
-function _getCurrentPsoition(terminal) {
+export function _getCurrentPsoition(terminal) {
   let _top = 0,
     _left = 0;
   let element = terminal;
@@ -142,7 +142,7 @@ function _getCurrentPsoition(terminal) {
   return { top: _top + 'px', left: _left + 'px' };
 }
 
-function setDraggable(div) {
+export function setDraggable(div) {
   var mousePosition;
   var offset = [0, 0];
   var isDown = false;

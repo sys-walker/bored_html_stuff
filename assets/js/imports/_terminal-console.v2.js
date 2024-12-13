@@ -1,3 +1,23 @@
+import { Storage } from './_storage.js';
+import { createWindowHeader, setDraggable } from './_window-app.js';
+import {
+  getDate,
+  getUptime,
+  neofetchCommand,
+  N_OS,
+  N_HOST,
+  N_KERNEL,
+  N_PACKAGES,
+  N_SHELL,
+  N_RESOLUTION,
+  N_DE,
+  N_THEME,
+  N_TERMINAL,
+  N_TERMINAL_FONT,
+  N_CPU,
+  N_GPU,
+  N_MEMORY,
+} from './_system.js';
 /*
 
 Create terminal console window with draggable functionality
@@ -13,7 +33,7 @@ Create terminal console window with draggable functionality
 </div> 
 
 */
-function openConsole() {
+export function openConsole() {
   let windowApp = _createTerminalWindow('Terminal console');
   let desktop = document.getElementById('desktop');
   desktop.appendChild(windowApp);
@@ -68,7 +88,7 @@ function _createLastLoginLine() {
 }
 
 function _getLastLogin() {
-  let lastLogin = storage_getItem('shell-login-date');
+  let lastLogin = Storage.getItem('shell-login-date');
   let newLogin = new Date()
     .toLocaleString('en-US', {
       weekday: 'short',
@@ -82,11 +102,12 @@ function _getLastLogin() {
     })
     .replace(/,/g, '');
 
-  storage_setItem('shell-login-date', newLogin);
+  Storage.setItem('shell-login-date', newLogin);
   return lastLogin ? lastLogin : newLogin;
 }
 
 function _writableTerminal(consoleContent) {
+  let promptSymbol = 'terminal@terminal-temple ~ # ';
   let cmd = ''; //buffer of keyinput
   let completeLine = '';
   let originalALstLogin = consoleContent.innerHTML;
@@ -97,6 +118,7 @@ function _writableTerminal(consoleContent) {
     consoleContent.onkeydown = function (e) {
       if (e.key === 'Enter') {
         // completeLine,originalALstLogin,this.parentElement,consoleContent
+        completeLine = completeLine.replace(promptSymbol, '').replace(/^\s+|\s+$/g, '');
 
         switch (completeLine) {
           case 'clear':
@@ -119,9 +141,34 @@ function _writableTerminal(consoleContent) {
             break;
           case '':
             break;
+          case 'neofetch':
+            neofetchCommand2('', consoleContent, consoleContent.innerHTML);
+            originalALstLogin = consoleContent.innerHTML;
+            break;
+          case 'pwd':
+            printLineTerminal(`/root`, consoleContent, consoleContent.innerHTML);
+            originalALstLogin = consoleContent.innerHTML;
+            console.log(originalALstLogin);
+
+            break;
+          case 'ls':
+            printLineTerminal(``, consoleContent, consoleContent.innerHTML);
+            originalALstLogin = consoleContent.innerHTML;
+            console.log(originalALstLogin);
+
+            break;
+          case 'help':
+            printLineTerminal(
+              'Supported commands: exit, uptime, neofetch, pwd',
+              consoleContent,
+              consoleContent.innerHTML
+            );
+            originalALstLogin = consoleContent.innerHTML;
+            break;
           default:
             printLineTerminal(`esh: command not found: ${completeLine}`, consoleContent, consoleContent.innerHTML);
             originalALstLogin = consoleContent.innerHTML;
+
             break;
         }
 
@@ -130,14 +177,17 @@ function _writableTerminal(consoleContent) {
       } else if (e.key === 'Backspace') {
         completeLine = '';
         cmd = cmd.slice(0, -1);
-        completeLine = cmd;
+        completeLine = promptSymbol + cmd;
         printLineTerminal(completeLine, consoleContent, originalALstLogin);
       } else {
         cmd += e.key;
-        completeLine = cmd;
+        completeLine = promptSymbol + cmd;
+
+        console.log(completeLine);
 
         printLineTerminal(completeLine, consoleContent, originalALstLogin);
       }
+      console.log('cmd', completeLine);
     };
 
     console.log('clicked');
@@ -152,7 +202,32 @@ function printLineTerminal(text, consoleContent, firstLineTerminal) {
                 color:#4AF626;
                 margin:0px;
                 font-family:monospace
-              ">${text}</p>
+              ">${text}</p></div>
+              
+        `;
+  consoleContent.innerHTML = firstLineTerminal + newLine;
+}
+
+export function neofetchCommand2(text, consoleContent, firstLineTerminal) {
+  let newLine = `
+          <p style="color: #4AF626;margin: 0px;font-family: monospace;"><span style="color:transparent">.................................</span>root@Experiments</p>
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:<span style="color:transparent">......</span>-----------------------</p> 
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:<span style="color:transparent">......</span>OS: ${N_OS}</p>
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>Host: ${N_HOST}</p>
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>Kernel: ${N_KERNEL}</p>
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>Uptime: ${getUptime()}</p> 
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>Packages: ${N_PACKAGES}</p>
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>Shell: ${N_SHELL}</p> 
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:<span style="color:transparent">......</span>Resolution: ${N_RESOLUTION}</p>
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:<span style="color:transparent">......</span>DE: ${N_DE}</p> 
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>WM: ${'???'}</p> 
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>WM Theme: ${N_THEME}</p> 
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>Terminal: ${N_TERMINAL}</p> 
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>Terminal Font: ${N_TERMINAL_FONT}</p>
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>CPU: ${N_CPU}</p>
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:<span style="color:transparent">......</span>GPU: ${N_GPU}</p> 
+<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:<span style="color:transparent">......</span>Memory: ${N_MEMORY}</p> 
+
         `;
   consoleContent.innerHTML = firstLineTerminal + newLine;
 }
@@ -179,23 +254,3 @@ function printLineTerminal(text, consoleContent, firstLineTerminal) {
                                                          
 
 */
-
-
-/** STORAGE_LOCAL_FN **/
-
-function storage_setItem(key, value) {
-  localStorage.setItem(
-    key,
-    JSON.stringify({
-      value: value,
-    })
-  );
-}
-function storage_getItem(key) {
-  let jsonValue = localStorage.getItem(key);
-
-  return jsonValue ? JSON.parse(jsonValue).value : undefined;
-}
-function storage_removeItem(key) {
-  localStorage.removeItem(key);
-}
