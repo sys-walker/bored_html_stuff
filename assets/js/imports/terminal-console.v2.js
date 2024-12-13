@@ -1,5 +1,5 @@
-import { Storage } from './_storage.js';
-import { createWindowHeader, setDraggable } from './_window-app.js';
+import { Storage } from './storage.js';
+import { createWindowHeader, setDraggable } from './window-app.js';
 import {
   getDate,
   getUptime,

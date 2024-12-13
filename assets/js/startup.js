@@ -1,5 +1,5 @@
-import { autoHideElements } from './imports/_desktop.js';
-import { saveBootTime, getUptime } from './imports/_system.js';
+import { autoHideElements } from './imports/desktop.js';
+import { saveBootTime, getUptime } from './imports/system.js';
 function getDate(dateOptions) {
   if (dateOptions === undefined) {
     dateOptions = {

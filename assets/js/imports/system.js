@@ -1,4 +1,4 @@
-import { Storage } from './_storage.js';
+import { Storage } from './storage.js';
 export function getTimestampInSeconds() {
   return Math.floor(Date.now() / 1000);
 }

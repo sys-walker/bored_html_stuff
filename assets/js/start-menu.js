@@ -1,5 +1,5 @@
-import { openConsole } from './imports/_terminal-console.v2.js';
-import { openGenericWindow } from './imports/_window-app.js';
+import { openConsole } from './imports/terminal-console.v2.js';
+import { openGenericWindow } from './imports/window-app.js';
 /*
 
  <div id="startmenu">
