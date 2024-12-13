@@ -17,7 +17,7 @@ import {
   N_CPU,
   N_GPU,
   N_MEMORY,
-} from './_system.js';
+} from './system.js';
 /*
 
 Create terminal console window with draggable functionality
