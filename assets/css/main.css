@@ -1,7 +1,6 @@
-@import url("./window-app.css");
-@import url("./startmenu.css");
-@import url("./terminal.v2.css");
-
+@import url('./window-app.css');
+@import url('./startmenu.css');
+@import url('./terminal.v2.css');
 
 body,
 html {

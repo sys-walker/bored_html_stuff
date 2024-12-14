@@ -136,7 +136,6 @@ function _writableTerminal(consoleContent) {
     consoleContent.tabIndex = 0;
 
     consoleContent.onkeydown = function (e) {
-      
       let cleared = false;
       if (e.key === 'Enter') {
         completeLine = completeLine.replace(PROMPT_CONSOLE, '').replace(/^\s+|\s+$/g, '');
@@ -190,8 +189,6 @@ function _writableTerminal(consoleContent) {
 
         cmd = '';
         completeLine = '';
-
-  
 
         if (!cleared) {
           printLineTerminal(``, consoleContent, false);

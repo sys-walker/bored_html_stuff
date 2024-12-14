@@ -1,5 +1,5 @@
 export class Storage {
-  static  setItem(key, value) {
+  static setItem(key, value) {
     localStorage.setItem(
       key,
       JSON.stringify({
@@ -8,12 +8,12 @@ export class Storage {
     );
     return value;
   }
-  static  getItem(key) {
+  static getItem(key) {
     let jsonValue = localStorage.getItem(key);
 
     return jsonValue ? JSON.parse(jsonValue).value : undefined;
   }
-  static  removeItem(key) {
+  static removeItem(key) {
     localStorage.removeItem(key);
   }
 }

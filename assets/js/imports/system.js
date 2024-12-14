@@ -83,6 +83,6 @@ export const N_CPU = 'none';
 export const N_GPU = 'none';
 export const N_MEMORY = 'none';
 
-export let USER_LOGGED='root';
+export let USER_LOGGED = 'root';
 export let CURRENT_DIRECTORY = '~';
 export let USER_LOGGED_SYMBOL = '#';
