@@ -127,7 +127,7 @@ export function maximizeWindow(param) {
     terminal.style.borderRadius = '0px'; // Set border radius
   }
 }
-export  var _positionTerminal = { top: 0, left: 0 };
+export var _positionTerminal = { top: 0, left: 0 };
 
 export function _getCurrentPsoition(terminal) {
   let _top = 0,
@@ -188,5 +188,3 @@ export function setDraggable(div) {
     true
   );
 }
-
-//openGenericWindow('My Application');

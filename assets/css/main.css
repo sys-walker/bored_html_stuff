@@ -1,3 +1,7 @@
+@import url('./window-app.css');
+@import url('./startmenu.css');
+@import url('./terminal.v2.css');
+
 body,
 html {
   margin: 0;

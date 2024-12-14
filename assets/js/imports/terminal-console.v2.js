@@ -17,6 +17,9 @@ import {
   N_CPU,
   N_GPU,
   N_MEMORY,
+  USER_LOGGED,
+  CURRENT_DIRECTORY,
+  USER_LOGGED_SYMBOL,
 } from './system.js';
 /*
 
@@ -59,13 +62,13 @@ function _createTerminalWindow(appTitle) {
 function _createTerminalConsole() {
   let consoleContent = document.createElement('div');
   consoleContent.className = 'window-console';
-  let lastloginLine = _createLastLoginLine();
+  consoleContent.appendChild(_createLastLoginLine());
+  consoleContent.appendChild(_createFirstPromptLine());
 
   consoleContent.onclick = function () {
     _writableTerminal(consoleContent);
   };
 
-  consoleContent.appendChild(lastloginLine);
   return consoleContent;
 }
 
@@ -83,6 +86,24 @@ function _createLastLoginLine() {
         font-family:monospace
       "
     >Last login ${_getLastLogin()} on ttys004</p>
+  `;
+  return lastloginContainer;
+}
+var PROMPT_CONSOLE = `${USER_LOGGED}@${N_HOST} ${CURRENT_DIRECTORY} ${USER_LOGGED_SYMBOL} `;
+function _createFirstPromptLine() {
+  let lastloginContainer = document.createElement('div');
+  lastloginContainer.style.display = 'flex';
+  lastloginContainer.style.flexDirection = 'row';
+  lastloginContainer.style.flexWrap = 'wrap';
+
+  lastloginContainer.innerHTML = `
+    <p
+      style="
+        color:#4AF626;
+        margin:0px;
+        font-family:monospace
+      "
+    >${PROMPT_CONSOLE}</p>
   `;
   return lastloginContainer;
 }
@@ -107,7 +128,6 @@ function _getLastLogin() {
 }
 
 function _writableTerminal(consoleContent) {
-  let promptSymbol = 'terminal@terminal-temple ~ # ';
   let cmd = ''; //buffer of keyinput
   let completeLine = '';
   let originalALstLogin = consoleContent.innerHTML;
@@ -116,14 +136,15 @@ function _writableTerminal(consoleContent) {
     consoleContent.tabIndex = 0;
 
     consoleContent.onkeydown = function (e) {
+      let cleared = false;
       if (e.key === 'Enter') {
-        // completeLine,originalALstLogin,this.parentElement,consoleContent
-        completeLine = completeLine.replace(promptSymbol, '').replace(/^\s+|\s+$/g, '');
+        completeLine = completeLine.replace(PROMPT_CONSOLE, '').replace(/^\s+|\s+$/g, '');
 
         switch (completeLine) {
           case 'clear':
             consoleContent.innerHTML = '';
             originalALstLogin = '';
+            cleared = true;
             break;
           case 'exit':
             let desktop = document.getElementById('desktop');
@@ -136,37 +157,31 @@ function _writableTerminal(consoleContent) {
               hour12: false,
             });
             let uptime = getUptime();
-            printLineTerminal(`${currentDate} up ${uptime}`, consoleContent, consoleContent.innerHTML);
+            printLineTerminal(`${currentDate} up ${uptime}`, consoleContent);
             originalALstLogin = consoleContent.innerHTML;
             break;
           case '':
+            cleared = true;
             break;
           case 'neofetch':
-            neofetchCommand2('', consoleContent, consoleContent.innerHTML);
+            neofetchCommand2('lal', consoleContent);
             originalALstLogin = consoleContent.innerHTML;
             break;
           case 'pwd':
-            printLineTerminal(`/root`, consoleContent, consoleContent.innerHTML);
+            printLineTerminal(`/root`, consoleContent);
+
             originalALstLogin = consoleContent.innerHTML;
-            console.log(originalALstLogin);
 
             break;
           case 'ls':
-            printLineTerminal(``, consoleContent, consoleContent.innerHTML);
             originalALstLogin = consoleContent.innerHTML;
-            console.log(originalALstLogin);
-
             break;
           case 'help':
-            printLineTerminal(
-              'Supported commands: exit, uptime, neofetch, pwd',
-              consoleContent,
-              consoleContent.innerHTML
-            );
+            printLineTerminal('Supported commands: exit, uptime, neofetch, pwd', consoleContent);
             originalALstLogin = consoleContent.innerHTML;
             break;
           default:
-            printLineTerminal(`esh: command not found: ${completeLine}`, consoleContent, consoleContent.innerHTML);
+            printLineTerminal(`esh: command not found: ${completeLine}`, consoleContent);
             originalALstLogin = consoleContent.innerHTML;
 
             break;
@@ -174,20 +189,24 @@ function _writableTerminal(consoleContent) {
 
         cmd = '';
         completeLine = '';
+
+        if (!cleared) {
+          printLineTerminal(``, consoleContent, false);
+          cleared = false;
+        }
+
+        let newChildP = _createFirstPromptLine();
+        consoleContent.appendChild(newChildP);
       } else if (e.key === 'Backspace') {
         completeLine = '';
         cmd = cmd.slice(0, -1);
-        completeLine = promptSymbol + cmd;
-        printLineTerminal(completeLine, consoleContent, originalALstLogin);
+        completeLine = PROMPT_CONSOLE + cmd;
+        writeOnWrite(consoleContent, completeLine);
       } else {
         cmd += e.key;
-        completeLine = promptSymbol + cmd;
-
-        console.log(completeLine);
-
-        printLineTerminal(completeLine, consoleContent, originalALstLogin);
+        completeLine = PROMPT_CONSOLE + cmd;
+        writeOnWrite(consoleContent, completeLine);
       }
-      console.log('cmd', completeLine);
     };
 
     console.log('clicked');
@@ -195,20 +214,31 @@ function _writableTerminal(consoleContent) {
   };
 }
 
-function printLineTerminal(text, consoleContent, firstLineTerminal) {
+function writeOnWrite(consoleContent, completeLine) {
+  let linesArr = consoleContent.getElementsByTagName('div');
+  let oldLastChild = linesArr[linesArr.length - 1];
+  let newChild = linesArr[linesArr.length - 1].cloneNode(true);
+  consoleContent.removeChild(oldLastChild);
+  let newChildP = newChild.getElementsByTagName('p')[0];
+  newChildP.innerHTML = completeLine;
+  consoleContent.appendChild(newChild);
+}
+
+function printLineTerminal(text, consoleContent, visible = true) {
   let newLine = `
           <div style="display: flex; flex-flow: wrap;">
             <p style="
-                color:#4AF626;
+                color: ${visible ? '#4AF626' : 'transparent'};
                 margin:0px;
                 font-family:monospace
-              ">${text}</p></div>
+              ">${visible ? text : '_'}</p></div>
               
         `;
-  consoleContent.innerHTML = firstLineTerminal + newLine;
+
+  consoleContent.innerHTML = consoleContent.innerHTML + newLine;
 }
 
-export function neofetchCommand2(text, consoleContent, firstLineTerminal) {
+function neofetchCommand2(text, consoleContent, firstLineTerminal) {
   let newLine = `
           <p style="color: #4AF626;margin: 0px;font-family: monospace;"><span style="color:transparent">.................................</span>root@Experiments</p>
 <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:<span style="color:transparent">......</span>-----------------------</p> 
@@ -231,26 +261,3 @@ export function neofetchCommand2(text, consoleContent, firstLineTerminal) {
         `;
   consoleContent.innerHTML = firstLineTerminal + newLine;
 }
-/* 
-<p style="color: #4AF626;margin: 0px;font-family: monospace;"><span style="color:transparent">.................................</span>root@Experiments</p>
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:<span style="color:transparent">......</span>-----------------------</p> 
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:<span style="color:transparent">......</span>OS: ExperimentOS</p>
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>Host: Unknown</p>
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>Kernel: Unknown</p>
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>Uptime: Unknown</p> 
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>Packages: Unknown</p>
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>Shell: esh 1.0</p> 
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:<span style="color:transparent">......</span>Resolution: Unknown</p>
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:<span style="color:transparent">......</span>DE: Pencil</p> 
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>WM: Unknown</p> 
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>WM Theme: Pencil</p> 
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>Terminal: Element Terminal</p> 
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>Terminal Font: Unknown</p>
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:<span style="color:transparent">........................</span>CPU: Unknown</p>
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:<span style="color:transparent">......</span>GPU: Unknown</p> 
-<p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:<span style="color:transparent">......</span>Memory: Unknown</p> 
-
-                                                         
-                                                         
-
-*/

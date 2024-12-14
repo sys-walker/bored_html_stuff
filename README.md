@@ -2,7 +2,6 @@
 
 Estava avorrit i vaig fer aixo Xd
 
-
 ```mermaid
 graph TD;
     _storage.js -->  _system.js;
@@ -10,17 +9,12 @@ graph TD;
     _system.js-->startup.js;
     startup.js-->_system.js;
     startup.js-->_desktop.js;
-   
-    
-   
-   
 ```
+
 ```mermaid
 graph TD;
     startmenu.js -->  terminal.js;
     terminal.js -->  storage_local_fn;
     startmenu.js -->  window-app.js;
     terminal.js -->  window-app.js;
-   
-   
 ```
