@@ -188,5 +188,3 @@ export function setDraggable(div) {
     true
   );
 }
-
-//openGenericWindow('My Application');
