@@ -231,7 +231,7 @@ function printLineTerminal(text, consoleContent, visible = true) {
                 color: ${visible ? '#4AF626' : 'transparent'};
                 margin:0px;
                 font-family:monospace
-              ">${visible ? text : '_'}</p></div>
+              ">${visible ? text : '&nbsp;'}</p></div>
               
         `;
 
