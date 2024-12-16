@@ -1,4 +1,4 @@
-import { openConsole } from './imports/terminal-console.v2.js';
+import { openConsole } from './imports/terminal/terminal-console.v2.js';
 import { openGenericWindow } from './imports/window-app.js';
 /*
 

@@ -58,15 +58,6 @@ export function getDate(dateOptions) {
   return formattedDate;
 }
 
-export function neofetchCommand() {
-  return `
-  OS: ${navigator.platform}
-  Hostname: ${navigator.userAgent}
-  Kernel: ${navigator.appVersion}
-  Uptime: ${getUptime()}
-  `;
-}
-
 export const N_OS = 'ExperimentOS';
 export const N_HOST = 'Bored';
 export const N_KERNEL = 'Bored';
@@ -77,8 +68,8 @@ export const N_RESOLUTION = `${window.screen.width}x${window.screen.height}`;
 export const N_DE = 'none';
 export const N_WM = 'none';
 export const N_THEME = 'none';
-export const N_TERMINAL = 'none';
-export const N_TERMINAL_FONT = 'none';
+export const N_TERMINAL = 'ETerm';
+export const N_TERMINAL_FONT = 'monospace';
 export const N_CPU = 'none';
 export const N_GPU = 'none';
 export const N_MEMORY = 'none';
