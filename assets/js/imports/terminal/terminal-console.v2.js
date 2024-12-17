@@ -141,7 +141,9 @@ function _writableTerminal(consoleContent) {
         completeLine = PROMPT_CONSOLE + cmd;
         writeOnWrite(consoleContent, completeLine);
       } else {
-        cmd += e.key;
+        console.log('key leng', e.key.length, e);
+
+        cmd += e.key.length === 1 ? e.key : '';
         completeLine = PROMPT_CONSOLE + cmd;
         writeOnWrite(consoleContent, completeLine);
       }
@@ -178,43 +180,63 @@ function printLineTerminal(text, consoleContent, visible = true) {
 
 function handleConsoleCommands(completeLine, consoleContent, originalALstLogin) {
   let cleared = false;
-  switch (completeLine) {
-    case 'clear':
+
+  /*
+  
+  /^123456$/ => struct match
+
+ let s = 'https://www.example.com';
+
+ switch (true) {
+   case /^http/.test(s):
+     console.log('The string is an HTTP URL.');
+     break;
+   case /^https/.test(s):
+     console.log('The string is an HTTPS URL.');
+     break;
+   case /www/.test(s):
+     console.log("The string contains 'www'");
+     break;
+   default:
+     console.log('No matching URL pattern found.');
+ }*/
+
+  switch (true) {
+    case /^clear$/.test(completeLine):
       consoleContent.innerHTML = '';
       originalALstLogin = '';
       cleared = true;
       break;
-    case 'exit':
+    case /^exit$/.test(completeLine):
       desktop = doletcument.getElementById('desktop');
       desktop.removeChild(this.parentElement);
       break;
-    case 'uptime':
+    case /^uptime$/.test(completeLine):
       printLineTerminal(TerminalCommands.uptime_str(), consoleContent);
       originalALstLogin = consoleContent.innerHTML;
       break;
-    case '':
+    case /^$/.test(completeLine):
       cleared = true;
       break;
-    case 'neofetch':
+    case /^neofetch$/.test(completeLine):
       TerminalCommands.neofetch(consoleContent);
       originalALstLogin = consoleContent.innerHTML;
       break;
-    case 'pwd':
+    case /^pwd$/.test(completeLine):
       printLineTerminal(`/root`, consoleContent);
       originalALstLogin = consoleContent.innerHTML;
       break;
-    case 'ls':
+    case /^ls/.test(completeLine):
       let children = FileSystem.getLS('/root');
-     
 
       children.forEach((child) => {
-         let childName = child.name + (child.type === 'dir' ? '/' : '');
-         printLineTerminal(childName, consoleContent);
-       });
+        let childName = child.name + (child.type === 'dir' ? '/' : '');
+        printLineTerminal(childName, consoleContent);
+      });
 
       originalALstLogin = consoleContent.innerHTML;
       break;
-    case 'help':
+    case /^help$/.test(completeLine):
       printLineTerminal('Supported commands: exit, uptime, neofetch, pwd', consoleContent);
       originalALstLogin = consoleContent.innerHTML;
       break;
