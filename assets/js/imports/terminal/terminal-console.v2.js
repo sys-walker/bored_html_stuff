@@ -2,6 +2,7 @@ import { Storage } from '../storage.js';
 import { TerminalCommands } from './terminal-commands.js';
 import { createWindowHeader, setDraggable } from '../window-app.js';
 import { getDate, getUptime, N_HOST, USER_LOGGED, CURRENT_DIRECTORY, USER_LOGGED_SYMBOL } from '../system.js';
+import { FileSystem } from './../filesystem/filesystem.js';
 /*
 
 Create terminal console window with draggable functionality
@@ -203,6 +204,14 @@ function handleConsoleCommands(completeLine, consoleContent, originalALstLogin) 
       originalALstLogin = consoleContent.innerHTML;
       break;
     case 'ls':
+      let children = FileSystem.getLS('/root');
+     
+
+      children.forEach((child) => {
+         let childName = child.name + (child.type === 'dir' ? '/' : '');
+         printLineTerminal(childName, consoleContent);
+       });
+
       originalALstLogin = consoleContent.innerHTML;
       break;
     case 'help':

@@ -1,7 +1,7 @@
 @import url('./window-app.css');
 @import url('./startmenu.css');
 @import url('./terminal.v2.css');
-
+@import url('./notepad.css');
 body,
 html {
   margin: 0;

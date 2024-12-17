@@ -1,5 +1,7 @@
 import { openConsole } from './imports/terminal/terminal-console.v2.js';
+import { openNotepad } from './imports/notepad/notepad.js';
 import { openGenericWindow } from './imports/window-app.js';
+import { FileSystem } from './imports/filesystem/filesystem.js';
 /*
 
  <div id="startmenu">
@@ -148,3 +150,7 @@ function changedCategory(newCategory) {
 //calls from startmenu accessible from body HTML
 window.openStartMenu = openStartMenu;
 window.openConsole = openConsole;
+window.openNotepad = openNotepad;
+
+//For development purposes
+//openNotepad();
