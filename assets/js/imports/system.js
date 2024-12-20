@@ -75,5 +75,45 @@ export const N_GPU = 'none';
 export const N_MEMORY = 'none';
 
 export let USER_LOGGED = 'root';
-export let CURRENT_DIRECTORY = '~';
+export let USER_HOME_DIRECTORY = '/root';
+export let CURRENT_DIRECTORY = '/root';
 export let USER_LOGGED_SYMBOL = '#';
+
+export function normalizePath(path) {
+  if (path === '/') {
+    return '/';
+  }
+  path = path.replace(/\/+$/, '');
+
+  path = path.startsWith('/') ? path : CURRENT_DIRECTORY + '/' + path;
+
+  let pathArr = path.split('/');
+  let normalizedPathArr = [];
+  pathArr.forEach((val) => {
+    if (val == '' || val != '.') {
+      normalizedPathArr.push(val);
+    }
+  });
+
+  let count = normalizedPathArr.reduce((acc, val) => acc + (val === '..'), 0);
+
+  if (count != 0) {
+    normalizedPathArr.splice(-(count * 2));
+  }
+
+  let normalizedPath = normalizedPathArr.join('/');
+
+  return normalizedPath === '' ? '/' : normalizedPath;
+}
+
+
+
+export class SystemCommands {
+  static changeDirectory(newPath) {
+    console.log('Changed directory', CURRENT_DIRECTORY + ' -> ' + newPath);
+    CURRENT_DIRECTORY = newPath;
+  }
+  static getPrompt(){
+    return `${USER_LOGGED}@${N_HOST} ${CURRENT_DIRECTORY} ${USER_LOGGED_SYMBOL} `;
+  }
+}

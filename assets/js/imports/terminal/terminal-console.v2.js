@@ -1,8 +1,7 @@
 import { Storage } from '../storage.js';
 import { TerminalCommands } from './terminal-commands.js';
 import { createWindowHeader, setDraggable } from '../window-app.js';
-import { getDate, getUptime, N_HOST, USER_LOGGED, CURRENT_DIRECTORY, USER_LOGGED_SYMBOL } from '../system.js';
-import { FileSystem } from './../filesystem/filesystem.js';
+import { CURRENT_DIRECTORY, USER_HOME_DIRECTORY, SystemCommands } from '../system.js';
 /*
 
 Create terminal console window with draggable functionality
@@ -71,7 +70,6 @@ function _createLastLoginLine() {
   `;
   return lastloginContainer;
 }
-var PROMPT_CONSOLE = `${USER_LOGGED}@${N_HOST} ${CURRENT_DIRECTORY} ${USER_LOGGED_SYMBOL} `;
 function _createFirstPromptLine() {
   let lastloginContainer = document.createElement('div');
   lastloginContainer.style.display = 'flex';
@@ -85,7 +83,7 @@ function _createFirstPromptLine() {
         margin:0px;
         font-family:monospace
       "
-    >${PROMPT_CONSOLE}</p>
+    >${SystemCommands.getPrompt()}</p>
   `;
   return lastloginContainer;
 }
@@ -120,7 +118,7 @@ function _writableTerminal(consoleContent) {
     consoleContent.onkeydown = function (e) {
       let cleared = false;
       if (e.key === 'Enter') {
-        completeLine = completeLine.replace(PROMPT_CONSOLE, '').replace(/^\s+|\s+$/g, '');
+        completeLine = completeLine.replace(SystemCommands.getPrompt(), '').replace(/^\s+|\s+$/g, '');
         console.log(completeLine, cmd);
 
         cleared = handleConsoleCommands(completeLine, consoleContent, originalALstLogin);
@@ -138,13 +136,11 @@ function _writableTerminal(consoleContent) {
       } else if (e.key === 'Backspace') {
         completeLine = '';
         cmd = cmd.slice(0, -1);
-        completeLine = PROMPT_CONSOLE + cmd;
+        completeLine = SystemCommands.getPrompt() + cmd;
         writeOnWrite(consoleContent, completeLine);
       } else {
-        console.log('key leng', e.key.length, e);
-
         cmd += e.key.length === 1 ? e.key : '';
-        completeLine = PROMPT_CONSOLE + cmd;
+        completeLine = SystemCommands.getPrompt() + cmd;
         writeOnWrite(consoleContent, completeLine);
       }
     };
@@ -181,26 +177,6 @@ function printLineTerminal(text, consoleContent, visible = true) {
 function handleConsoleCommands(completeLine, consoleContent, originalALstLogin) {
   let cleared = false;
 
-  /*
-  
-  /^123456$/ => struct match
-
- let s = 'https://www.example.com';
-
- switch (true) {
-   case /^http/.test(s):
-     console.log('The string is an HTTP URL.');
-     break;
-   case /^https/.test(s):
-     console.log('The string is an HTTPS URL.');
-     break;
-   case /www/.test(s):
-     console.log("The string contains 'www'");
-     break;
-   default:
-     console.log('No matching URL pattern found.');
- }*/
-
   switch (true) {
     case /^clear$/.test(completeLine):
       consoleContent.innerHTML = '';
@@ -208,27 +184,24 @@ function handleConsoleCommands(completeLine, consoleContent, originalALstLogin) 
       cleared = true;
       break;
     case /^exit$/.test(completeLine):
-      desktop = doletcument.getElementById('desktop');
+      desktop = document.getElementById('desktop');
       desktop.removeChild(this.parentElement);
       break;
     case /^uptime$/.test(completeLine):
       printLineTerminal(TerminalCommands.uptime_str(), consoleContent);
       originalALstLogin = consoleContent.innerHTML;
       break;
-    case /^$/.test(completeLine):
-      cleared = true;
-      break;
     case /^neofetch$/.test(completeLine):
       TerminalCommands.neofetch(consoleContent);
       originalALstLogin = consoleContent.innerHTML;
       break;
     case /^pwd$/.test(completeLine):
-      printLineTerminal(`/root`, consoleContent);
+      printLineTerminal(CURRENT_DIRECTORY, consoleContent);
       originalALstLogin = consoleContent.innerHTML;
       break;
     case /^ls/.test(completeLine):
-      let children = FileSystem.getLS('/root');
-
+      let lsParts = completeLine.split(' ');
+      let children = TerminalCommands.listDirectory(lsParts[1] || '.');
       children.forEach((child) => {
         let childName = child.name + (child.type === 'dir' ? '/' : '');
         printLineTerminal(childName, consoleContent);
@@ -236,9 +209,18 @@ function handleConsoleCommands(completeLine, consoleContent, originalALstLogin) 
 
       originalALstLogin = consoleContent.innerHTML;
       break;
-    case /^help$/.test(completeLine):
-      printLineTerminal('Supported commands: exit, uptime, neofetch, pwd', consoleContent);
+    case /^cd/.test(completeLine):
+      let _lsParts = completeLine.split(' ');
+      let result = TerminalCommands.changeDirectory(_lsParts[1] || USER_HOME_DIRECTORY);
+      printLineTerminal(result, consoleContent);
       originalALstLogin = consoleContent.innerHTML;
+      break;
+    case /^help$/.test(completeLine):
+      printLineTerminal('Supported commands: exit, uptime, neofetch, pwd, ls', consoleContent);
+      originalALstLogin = consoleContent.innerHTML;
+      break;
+    case /^$/.test(completeLine):
+      cleared = true;
       break;
     default:
       printLineTerminal(`esh: command not found: ${completeLine}`, consoleContent);

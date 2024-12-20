@@ -15,9 +15,12 @@ import {
   N_GPU,
   N_MEMORY,
   USER_LOGGED,
-  CURRENT_DIRECTORY,
-  USER_LOGGED_SYMBOL,
+  normalizePath,
+  SystemCommands,
 } from '../system.js';
+
+import { FileSystem } from './../filesystem/filesystem.js';
+
 export class TerminalCommands {
   static neofetch(consoleContent, firstLineTerminal = '') {
     let newLine = `
@@ -51,5 +54,35 @@ export class TerminalCommands {
     });
     let uptime = getUptime();
     return `${currentDate} up ${uptime}`;
+  }
+
+  static changeDirectory(fdir) {
+    fdir = normalizePath(fdir);
+    let result = FileSystem.changeDirectory(fdir);
+
+    if (result.error) {
+      return result.message;
+    }
+    SystemCommands.changeDirectory(fdir);
+    return fdir;
+  }
+
+  static listDirectory(fdir) {
+    fdir = normalizePath(fdir);
+    console.log('fdir', fdir);
+
+    let result = FileSystem.getLS(fdir);
+
+    if (result.error) {
+      return [
+        {
+          name: result.message,
+          content: 'error',
+          type: 'error',
+        },
+      ];
+    } else {
+      return result.children;
+    }
   }
 }

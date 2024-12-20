@@ -17,13 +17,11 @@ export class FileSystem {
     if (!fs) {
       Storage.setItem('fs', initialFS);
     }
-    console.log(fs);
   }
   static getFS() {
     FileSystem.initFS();
     return Storage.getItem('fs');
   }
-
 
   static createFile(path, name, content) {
     let pathArray = path.split('/');
@@ -92,18 +90,29 @@ export class FileSystem {
     }
   }
 
+  /**
+   * Retrieves the list of files and directories at the specified path in the filesystem.
+   *
+   * @param {string} path - The path to the directory in the filesystem.
+   * @returns {Object} An object containing the result of the operation.
+   * @returns {boolean} return.error - Indicates if there was an error.
+   * @returns {Array} return.children - The list of files and directories if no error occurred.
+   * @returns {string} return.message - The error message if an error occurred.
+   */
   static getLS(path) {
+    
     let pathArray = path.split('/');
     let fs = FileSystem.getFS();
-    let exists = FileSystem.__canAddFile([...pathArray], fs);
+    let exists = FileSystem.__existsDirectory([...pathArray], fs);
 
-    if (exists) {
-      return FileSystem.__getLS([...pathArray], fs);
+    if (!exists.error) {
+      let files = FileSystem.__getLS([...pathArray], fs);
+      return { error: false, children: files, message: '' };
     } else {
-      console.log('Path does not exists');
-
-      return [];
+      return { error: true, children: [], message: exists.message };
     }
+
+
   }
 
   static __getLS(pathArray, fs) {
@@ -111,6 +120,7 @@ export class FileSystem {
       if (Array.isArray(fs)) {
         return fs;
       } else {
+
         return [];
       }
     } else {
@@ -125,6 +135,41 @@ export class FileSystem {
         }
       }
       return [];
+    }
+  }
+
+  static changeDirectory(path) {
+    let pathArray = path.split('/');
+    let fs = FileSystem.getFS();
+    let exists = FileSystem.__existsDirectory([...pathArray], fs);
+
+    return exists;
+  }
+  static __existsDirectory(pathArray, fs) {
+    /**
+     *
+     * @param {Array} pathArray
+     * @param {Array} fs
+     * @returns {Object} {error:boolean,message:string}
+     */
+    if (pathArray.length === 0) {
+      if (Array.isArray(fs)) {
+        return { error: false, message: 'Directory exists' };
+      } else {
+        return { error: true, message: 'This is not a directory' };
+      }
+    } else {
+      if (Array.isArray(pathArray) && pathArray.every((segment) => segment === '')) {
+        return { error: false, message: 'Directory exists' };
+      }
+      let npathArray = pathArray.shift();
+      npathArray = npathArray === '' ? pathArray.shift() : npathArray;
+      for (let i = 0; i < fs.length; i++) {
+        if (fs[i].name === npathArray) {
+          return FileSystem.__existsDirectory(pathArray, fs[i].children);
+        }
+      }
+      return { error: true, message: 'Directory does not exists' };
     }
   }
 }
