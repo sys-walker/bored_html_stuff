@@ -100,7 +100,6 @@ export class FileSystem {
    * @returns {string} return.message - The error message if an error occurred.
    */
   static getLS(path) {
-    
     let pathArray = path.split('/');
     let fs = FileSystem.getFS();
     let exists = FileSystem.__existsDirectory([...pathArray], fs);
@@ -111,8 +110,6 @@ export class FileSystem {
     } else {
       return { error: true, children: [], message: exists.message };
     }
-
-
   }
 
   static __getLS(pathArray, fs) {
@@ -120,7 +117,6 @@ export class FileSystem {
       if (Array.isArray(fs)) {
         return fs;
       } else {
-
         return [];
       }
     } else {
@@ -170,6 +166,111 @@ export class FileSystem {
         }
       }
       return { error: true, message: 'Directory does not exists' };
+    }
+  }
+
+  static getFile(path) {
+    //{ error: true, message: 'Not implemented yet (FS)', lines: [] };
+    let pathArray = path.split('/');
+    let fs = FileSystem.getFS();
+    let exists = FileSystem.__existsFile([...pathArray], fs);
+
+    if (!exists.error) {
+      let file = FileSystem.__getFile([...pathArray], fs);
+
+      console.log(file);
+
+      return { error: false, lines: file.content.split('\n'), message: '' };
+    } else {
+      return { error: true, lines: [], message: exists.message };
+    }
+  }
+
+  static deleteFile(path) {
+    let pathArray = path.split('/');
+    let fs = FileSystem.getFS();
+    let exists = FileSystem.__existsFile([...pathArray], fs);
+
+    if (!exists.error) {
+      FileSystem.__deleteFile([...pathArray], fs);
+      console.log(fs);
+
+      return { error: false, message: '' };
+    } else {
+      return { error: true, message: exists.message };
+    }
+  }
+
+  static __existsFile(pathArray, fs) {
+    /**
+     *
+     * @param {Array} pathArray
+     * @param {Array} fs
+     * @returns {Object} {error:boolean,message:string}
+     */
+    if (pathArray.length === 0) {
+      if (Array.isArray(fs)) {
+        return { error: true, message: 'This is not a file' };
+      } else {
+        console.log('This is a file', fs);
+
+        return { error: false, message: 'File exists' };
+      }
+    } else {
+      if (Array.isArray(pathArray) && pathArray.every((segment) => segment === '')) {
+        return { error: true, message: 'This is not a file' };
+      }
+      let npathArray = pathArray.shift();
+      npathArray = npathArray === '' ? pathArray.shift() : npathArray;
+      for (let i = 0; i < fs.length; i++) {
+        if (fs[i].name === npathArray) {
+          return FileSystem.__existsFile(pathArray, fs[i].children);
+        }
+      }
+      return { error: true, message: 'File does not exists' };
+    }
+  }
+
+  static __getFile(pathArray, fs) {
+    /**
+     * MUST CHECK IF THE FILE EXISTS BEFORE CALLING THIS FUNCTION
+     *
+     */
+    if (pathArray.length === 1) {
+      for (let i = 0; i < fs.length; i++) {
+        if (fs[i].name === pathArray[0]) {
+          return fs[i];
+        }
+      }
+    } else {
+      let npathArray = pathArray.shift();
+      npathArray = npathArray === '' ? pathArray.shift() : npathArray;
+      for (let i = 0; i < fs.length; i++) {
+        if (fs[i].name === npathArray) {
+          return FileSystem.__getFile(pathArray, fs[i].children);
+        }
+      }
+    }
+  }
+
+  static __deleteFile(pathArray, fs) {
+    /**
+     * MUST CHECK IF THE FILE EXISTS BEFORE CALLING THIS FUNCTION
+     *
+     */
+    if (pathArray.length === 1) {
+      let index = fs.findIndex((file) => file.name === pathArray[0]);
+      if (index > -1) {
+        fs.splice(index, 1);
+      }
+    } else {
+      let npathArray = pathArray.shift();
+      npathArray = npathArray === '' ? pathArray.shift() : npathArray;
+      for (let i = 0; i < fs.length; i++) {
+        if (fs[i].name === npathArray) {
+          return FileSystem.__getFile(pathArray, fs[i].children);
+        }
+      }
     }
   }
 }

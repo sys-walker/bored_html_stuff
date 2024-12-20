@@ -209,6 +209,27 @@ function handleConsoleCommands(completeLine, consoleContent, originalALstLogin) 
 
       originalALstLogin = consoleContent.innerHTML;
       break;
+
+    case /^cat/.test(completeLine):
+      let catArgs = completeLine.split(' ');
+      let fileLines = TerminalCommands.displayFile(catArgs[1] || '.');
+      fileLines.forEach((line) => {
+        printLineTerminal(line, consoleContent);
+      });
+
+      originalALstLogin = consoleContent.innerHTML;
+      break;
+
+    case /^rm/.test(completeLine):
+      let rmArgs = completeLine.split(' ');
+      let rmResult = TerminalCommands.deleteFile(rmArgs[1] || '.');
+      
+        printLineTerminal(rmResult, consoleContent);
+     
+
+      originalALstLogin = consoleContent.innerHTML;
+      break;
+
     case /^cd/.test(completeLine):
       let _lsParts = completeLine.split(' ');
       let result = TerminalCommands.changeDirectory(_lsParts[1] || USER_HOME_DIRECTORY);

@@ -69,7 +69,6 @@ export class TerminalCommands {
 
   static listDirectory(fdir) {
     fdir = normalizePath(fdir);
-    console.log('fdir', fdir);
 
     let result = FileSystem.getLS(fdir);
 
@@ -83,6 +82,29 @@ export class TerminalCommands {
       ];
     } else {
       return result.children;
+    }
+  }
+
+  static displayFile(fdir) {
+    fdir = normalizePath(fdir);
+    let result = FileSystem.getFile(fdir);
+
+    //let result = { error: true, message: 'Not implemented yet (FS)', lines: [] };
+    if (result.error) {
+      return [result.message];
+    } else {
+      return result.lines;
+    }
+  }
+
+  static deleteFile(fdir) {
+    fdir = normalizePath(fdir);
+    let result = FileSystem.deleteFile(fdir);
+
+    if (result.error) {
+      return result.message;
+    } else {
+      return 'File deleted';
     }
   }
 }
