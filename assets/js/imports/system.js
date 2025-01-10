@@ -80,40 +80,44 @@ export let CURRENT_DIRECTORY = '/root';
 export let USER_LOGGED_SYMBOL = '#';
 
 export function normalizePath(path) {
-  if (path === '/') {
-    return '/';
-  }
+  if (path === '/') return '/';
+
+  // Eliminar barras finales redundantes
   path = path.replace(/\/+$/, '');
 
-  path = path.startsWith('/') ? path : CURRENT_DIRECTORY + '/' + path;
-
-  let pathArr = path.split('/');
-  let normalizedPathArr = [];
-  pathArr.forEach((val) => {
-    if (val == '' || val != '.') {
-      normalizedPathArr.push(val);
-    }
-  });
-
-  let count = normalizedPathArr.reduce((acc, val) => acc + (val === '..'), 0);
-
-  if (count != 0) {
-    normalizedPathArr.splice(-(count * 2));
+  // Convertir ruta relativa a una absoluta si es necesario
+  if (!path.startsWith('/')) {
+    path = `${CURRENT_DIRECTORY}/${path}`;
   }
 
-  let normalizedPath = normalizedPathArr.join('/');
+  // Dividir la ruta y normalizar los segmentos
+  const pathSegments = path.split('/');
+  const normalizedSegments = [];
 
-  return normalizedPath === '' ? '/' : normalizedPath;
+  for (const segment of pathSegments) {
+    if (segment === '..') {
+      // Retroceder un nivel (si no estamos en la raíz)
+      if (normalizedSegments.length > 0) {
+        normalizedSegments.pop();
+      }
+    } else if (segment !== '.' && segment !== '') {
+      // Agregar segmento válido
+      normalizedSegments.push(segment);
+    }
+  }
+
+  // Reconstruir la ruta normalizada
+  const normalizedPath = `/${normalizedSegments.join('/')}`;
+
+  return normalizedPath;
 }
-
-
 
 export class SystemCommands {
   static changeDirectory(newPath) {
     console.log('Changed directory', CURRENT_DIRECTORY + ' -> ' + newPath);
     CURRENT_DIRECTORY = newPath;
   }
-  static getPrompt(){
+  static getPrompt() {
     return `${USER_LOGGED}@${N_HOST} ${CURRENT_DIRECTORY} ${USER_LOGGED_SYMBOL} `;
   }
 }

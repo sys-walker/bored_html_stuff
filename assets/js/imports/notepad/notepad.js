@@ -1,4 +1,4 @@
-import { createWindowHeader, setDraggable } from '../window-app.js';
+import { createWindowHeader, createWindowButtons, createWindowTitle, setDraggable } from '../window-app.js';
 import { FileSystem } from '../filesystem/filesystem.js';
 /*
 
@@ -29,42 +29,60 @@ function _createNotepadWindow(appTitle) {
   //windowApp.style.setProperty('--initial-window-height', '200px');
   //windowApp.style.setProperty('--initial-window-width', '350px');
 
-  let windowHeader = createWindowHeader(appTitle);
-  let windowContent = _createNotepadContent();
-
+  let windowHeader = __createWindowHeader(appTitle); //generic header
   windowApp.appendChild(windowHeader);
+  //custom header
+
+  let windowContent = _createNotepadContent(windowApp);
+
   windowApp.appendChild(windowContent);
 
   setDraggable(windowApp);
   return windowApp;
 }
-function _createNotepadContent() {
+
+export function __createWindowHeader(appTitle) {
+  let windowHeader = document.createElement('div');
+  windowHeader.className = 'window-header notepad-header';
+  let windowTitle = __createWindowTitle(appTitle);
+  let windowsButtons = createWindowButtons();
+
+  windowHeader.appendChild(windowTitle);
+  windowHeader.appendChild(windowsButtons);
+  return windowHeader;
+}
+export function __createWindowTitle(appTitle) {
+  let windowTitle = document.createElement('div');
+  windowTitle.className = 'window-title';
+  let savebtn = document.createElement('div');
+  savebtn.innerHTML = `<button style="background-color:#d8d8d8;border: 1px solid transparent;" class= "button-save">Save</button>`;
+  let openbtn = document.createElement('div');
+  openbtn.innerHTML = `<button style="background-color:#d8d8d8;border: 1px solid transparent;" class= "button-open">Open</button>`;
+
+  if (typeof appTitle === 'string') {
+    let p = document.createElement('p');
+    p.innerHTML = appTitle;
+    windowTitle.appendChild(openbtn);
+    windowTitle.appendChild(p);
+    windowTitle.appendChild(savebtn);
+  }
+
+  return windowTitle;
+}
+
+function _createNotepadContent(windowApp) {
   let consoleContent = document.createElement('div');
   consoleContent.className = 'window-content';
-  let buttonsSlot = _createNotepadButtons();
+  let buttonsSlot = windowApp.getElementsByClassName('window-title')[0];
+
   let textArea = document.createElement('textarea');
-  consoleContent.appendChild(buttonsSlot);
+  //consoleContent.appendChild(buttonsSlot);
   consoleContent.appendChild(textArea);
 
   _configureButtons(buttonsSlot, consoleContent);
+  console.log('consoleContent', consoleContent);
 
   return consoleContent;
-}
-
-function _createNotepadButtons() {
-  let buttonsSlot = document.createElement('div');
-  buttonsSlot.className = 'buttons-slot';
-
-  let buttonSave = document.createElement('button');
-  buttonSave.className = 'button-save';
-  buttonSave.innerText = 'Save';
-
-  let buttonOpen = document.createElement('button');
-  buttonOpen.className = 'button-open';
-  buttonOpen.innerText = 'Open';
-  buttonsSlot.appendChild(buttonSave);
-  buttonsSlot.appendChild(buttonOpen);
-  return buttonsSlot;
 }
 
 function _configureButtons(buttonsSlot, consoleContent) {

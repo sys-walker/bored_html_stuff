@@ -46,9 +46,9 @@ function _createTerminalConsole() {
   consoleContent.appendChild(_createLastLoginLine());
   consoleContent.appendChild(_createFirstPromptLine());
 
-  consoleContent.onclick = function () {
-    _writableTerminal(consoleContent);
-  };
+  //consoleContent.onclick = function () {
+  _writableTerminal(consoleContent);
+  //};
 
   return consoleContent;
 }
@@ -133,6 +133,8 @@ function _writableTerminal(consoleContent) {
 
         let newChildP = _createFirstPromptLine();
         consoleContent.appendChild(newChildP);
+
+        consoleContent.scrollTop = consoleContent.scrollHeight;
       } else if (e.key === 'Backspace') {
         completeLine = '';
         cmd = cmd.slice(0, -1);
@@ -223,9 +225,8 @@ function handleConsoleCommands(completeLine, consoleContent, originalALstLogin) 
     case /^rm/.test(completeLine):
       let rmArgs = completeLine.split(' ');
       let rmResult = TerminalCommands.deleteFile(rmArgs[1] || '.');
-      
-        printLineTerminal(rmResult, consoleContent);
-     
+
+      printLineTerminal(rmResult, consoleContent);
 
       originalALstLogin = consoleContent.innerHTML;
       break;
