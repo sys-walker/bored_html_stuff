@@ -211,7 +211,6 @@ function handleConsoleCommands(completeLine, consoleContent, originalALstLogin) 
 
       originalALstLogin = consoleContent.innerHTML;
       break;
-
     case /^cat/.test(completeLine):
       let catArgs = completeLine.split(' ');
       let fileLines = TerminalCommands.displayFile(catArgs[1] || '.');
@@ -221,7 +220,6 @@ function handleConsoleCommands(completeLine, consoleContent, originalALstLogin) 
 
       originalALstLogin = consoleContent.innerHTML;
       break;
-
     case /^rm/.test(completeLine):
       let rmArgs = completeLine.split(' ');
       let rmResult = TerminalCommands.deleteFile(rmArgs[1] || '.');
@@ -230,7 +228,6 @@ function handleConsoleCommands(completeLine, consoleContent, originalALstLogin) 
 
       originalALstLogin = consoleContent.innerHTML;
       break;
-
     case /^cd/.test(completeLine):
       let _lsParts = completeLine.split(' ');
       let result = TerminalCommands.changeDirectory(_lsParts[1] || USER_HOME_DIRECTORY);
@@ -238,7 +235,7 @@ function handleConsoleCommands(completeLine, consoleContent, originalALstLogin) 
       originalALstLogin = consoleContent.innerHTML;
       break;
     case /^help$/.test(completeLine):
-      printLineTerminal('Supported commands: exit, uptime, neofetch, pwd, ls', consoleContent);
+      printLineTerminal('Supported commands: exit, uptime, neofetch, pwd, ls, cat, rm, cd, help', consoleContent);
       originalALstLogin = consoleContent.innerHTML;
       break;
     case /^$/.test(completeLine):

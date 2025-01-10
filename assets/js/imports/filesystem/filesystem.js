@@ -193,7 +193,7 @@ export class FileSystem {
 
     if (!exists.error) {
       FileSystem.__deleteFile([...pathArray], fs);
-      console.log(fs);
+      Storage.setItem('fs', fs); //update FS
 
       return { error: false, message: '' };
     } else {
@@ -255,21 +255,26 @@ export class FileSystem {
 
   static __deleteFile(pathArray, fs) {
     /**
-     * MUST CHECK IF THE FILE EXISTS BEFORE CALLING THIS FUNCTION
+     * MUST CHECK IF THE FILE EXISTS BEFORE CALLING THIS
+     *
+     * assumed the last path segment is a file
      *
      */
-    if (pathArray.length === 1) {
-      let index = fs.findIndex((file) => file.name === pathArray[0]);
+    if (pathArray.length === 2) {
+      let index = fs.findIndex((file) => file.name === pathArray[1]);
       if (index > -1) {
         fs.splice(index, 1);
+      } else {
+        //error
       }
     } else {
-      let npathArray = pathArray.shift();
-      npathArray = npathArray === '' ? pathArray.shift() : npathArray;
-      for (let i = 0; i < fs.length; i++) {
-        if (fs[i].name === npathArray) {
-          return FileSystem.__getFile(pathArray, fs[i].children);
-        }
+      if (pathArray.length !== 2) {
+        pathArray.shift();
+        let nextPathSegment = pathArray[0];
+        let nextFsLevel = fs.find((element) => element.name === nextPathSegment);
+        return FileSystem.__deleteFile(pathArray, nextFsLevel.children);
+      }else{
+        //error
       }
     }
   }
