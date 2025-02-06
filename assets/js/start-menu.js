@@ -1,6 +1,7 @@
 import { openConsole } from './imports/terminal/terminal-console.v2.js';
 import { openNotepad } from './imports/notepad/notepad.js';
 import { openGenericWindow } from './imports/window-app.js';
+import { testWindow } from './imports/genericWindow/generic_window.js';
 import { FileSystem } from './imports/filesystem/filesystem.js';
 /*
 
@@ -154,3 +155,4 @@ window.openNotepad = openNotepad;
 
 //For development purposes
 //openNotepad();
+testWindow();

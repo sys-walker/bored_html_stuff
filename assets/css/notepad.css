@@ -10,8 +10,6 @@
     flex-direction: column;
     padding: 0px;
 
-    /*   */
-    /*ebebeb*/
     .buttons-slot {
       display: flex;
       flex-direction: row;
@@ -21,14 +19,14 @@
     }
   }
   .notepad-header {
-    background-color: #ebebeb !important;
+    background-color: #303030 !important;
 
     .window-title {
       flex-direction: row !important;
       justify-content: space-between !important;
       align-items: center !important;
       p {
-        color: #000;
+        color: #fff;
       }
     }
   }
@@ -39,6 +37,7 @@
     height: 100%;
     resize: none;
     border-radius: 0px 0px 15px 15px;
+    border-color: transparent;
   }
 }
 
