@@ -5,9 +5,7 @@ export class BaseWindow {
   hasMenuDropdown = false;
   titleContent = 'My Application';
 
-  constructor() {
-    console.log('constructor base window');
-  }
+  constructor() {}
   build() {
     let genericWindow = document.createElement('div');
     genericWindow.className = 'g-window';
@@ -131,7 +129,7 @@ export class BaseWindow {
     closeImg.src = '/assets/img/terminal/close.svg';
 
     close.onclick = function () {
-      console.log('close button clicked', this.parentNode.parentNode.parentNode);
+ 
       let windowApp = this.parentNode.parentNode.parentNode;
       let desktop = document.getElementById('desktop');
       desktop.removeChild(windowApp);
@@ -156,9 +154,37 @@ export class BaseWindow {
     // Es importante que el div sea posicionable (por ejemplo, absolute)
     div.style.position = 'absolute';
 
-    div.addEventListener(
+    const moveToFront = (win) => {
+      const desktop = win.parentNode;
+      const children = Array.from(desktop.children);
+      if (children.length <= 1) return;
+
+      // Calcular el z-index máximo de los hijos
+      const maxZIndex = children.reduce((max, child) => {
+        const z = parseInt(child.style.zIndex) || 0;
+        return Math.max(max, z);
+      }, 0);
+
+      // Obtener el z-index actual del elemento
+      const currentZ = parseInt(win.style.zIndex) || 0;
+
+      // Si el z-index del elemento ya está en el máximo permitido, reiniciamos
+      if (currentZ >= 2147483647) {
+        children.forEach((child) => {
+          if (child !== win) {
+            child.style.zIndex = 0;
+          }
+        });
+        win.style.zIndex = 1;
+      } else {
+        win.style.zIndex = maxZIndex + 1;
+      }
+    };
+
+    div.querySelector('.window-header').addEventListener(
       'mousedown',
       function (e) {
+        moveToFront(div);
         isDown = true;
         offset = [div.offsetLeft - e.clientX, div.offsetTop - e.clientY];
       },
@@ -218,16 +244,4 @@ export function _getCurrentPsoition(terminal) {
   } while (element);
 
   return { top: _top + 'px', left: _left + 'px' };
-}
-
-export function testWindow() {
-  let i = new BaseWindow();
-  i.addTitle('TEST WINDOW');
-  i.addTabButton(true);
-  i.addSeach(true);
-  i.addMenuDropwdown(true);
-  let app = i.build();
-  BaseWindow.addToDesktop(app);
-
-  console.log('test instance', i);
 }

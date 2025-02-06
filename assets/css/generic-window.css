@@ -2,6 +2,7 @@
   --default-window-height: 400px;
   --default-window-width: 600px;
   --window-border-radius: 10px;
+  --default-window-background: rgba(34, 34, 34, 1);
 }
 .g-window {
   height: var(--default-window-height, 400px);
@@ -15,7 +16,7 @@
   height: 40px;
   width: 100%;
   padding: 5px 10px 5px 10px;
-  background-color: rgba(0, 0, 0, 1);
+  background-color: var(--default-window-background, rgba(34, 34, 34, 1));
   display: flex;
 }
 .g-window .window-header .tab-button {

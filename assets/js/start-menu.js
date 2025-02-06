@@ -1,7 +1,7 @@
 import { openConsole } from './imports/terminal/terminal-console.v2.js';
 import { openNotepad } from './imports/notepad/notepad.js';
 import { openGenericWindow } from './imports/window-app.js';
-import { testWindow } from './imports/genericWindow/generic_window.js';
+import { testWindow } from './imports/notepad/notepad2.js';
 import { FileSystem } from './imports/filesystem/filesystem.js';
 /*
 
@@ -152,7 +152,7 @@ function changedCategory(newCategory) {
 window.openStartMenu = openStartMenu;
 window.openConsole = openConsole;
 window.openNotepad = openNotepad;
-
+window.openGenericWindow = testWindow;
 //For development purposes
 //openNotepad();
 testWindow();
