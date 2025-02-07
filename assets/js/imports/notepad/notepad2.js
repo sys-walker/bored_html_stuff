@@ -2,11 +2,10 @@ import { BaseWindow } from '../genericWindow/generic_window.js';
 
 class Notepad {
   baseWindowHTML = '';
-  baseWindow; // Declarar la propiedad para almacenar el objeto BaseWindow
+  baseWindow;
 
   constructor() {
-    this.baseWindow = new BaseWindow();
-    this.baseWindow.addTitle('Notepad');
+    this.baseWindow = new BaseWindow().addTitle('Notepad').addTabButton().addSeach().addMenuDropwdown();
     this.baseWindowHTML = this.baseWindow.build();
   }
 
@@ -18,8 +17,9 @@ class Notepad {
     return this.baseWindowHTML;
   }
 }
-export function testWindow() {
-  let i = new Notepad();
-  let app = i.build();
+
+export function openNotepad() {
+  let notepad2 = new Notepad();
+  let app = notepad2.build();
   BaseWindow.addToDesktop(app);
 }
