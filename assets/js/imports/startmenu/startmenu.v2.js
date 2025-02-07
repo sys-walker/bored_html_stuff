@@ -59,25 +59,7 @@ export class StartMenu {
           item.name.toUpperCase().includes(event.target.value.toUpperCase()) ||
           item._name.toUpperCase().includes(event.target.value.toUpperCase())
       );
-
-      //Create list with found items
-      let startmenuContent = document.getElementById('startmenu-content');
-      console.log(found);
-
-      if (found.length > 0) {
-        //create newlist
-        let alreadyList = document.getElementById('sidemenu-list');
-        if (alreadyList) {
-          startmenuContent.removeChild(alreadyList);
-        }
-        startmenuContent.appendChild(this._createSearchResultsList(found));
-      } else {
-        //No items found
-        let alreadyList = document.getElementById('sidemenu-list');
-        if (!alreadyList) {
-          startmenuContent.appendChild(this._createSideMenuList('all'));
-        }
-      }
+      this._foundSearchResults(found);
     };
     searchbar.appendChild(input);
     return searchbar;
@@ -183,5 +165,24 @@ export class StartMenu {
 
     let sidemenuList = this._createSideMenuList(newCategory);
     startmenuContent.appendChild(sidemenuList);
+  }
+
+  _foundSearchResults(found) {
+    //Create list with found items
+    let startmenuContent = document.getElementById('startmenu-content');
+    console.log(found);
+
+    let alreadyList = document.getElementById('sidemenu-list');
+    if (alreadyList) {
+      startmenuContent.removeChild(alreadyList);
+    }
+    if (found.length > 0) {
+      //create newlist
+      startmenuContent.appendChild(this._createSearchResultsList(found));
+    } else {
+      //No items found
+      startmenuContent.appendChild(this._createSideMenuList('all'));
+      s;
+    }
   }
 }
