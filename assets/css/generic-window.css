@@ -20,16 +20,46 @@
   display: flex;
 }
 .g-window .window-header .tab-button {
-  font-size: 20px;
-  font-weight: bold;
+  height: 30px;
+  width: 30px; /* header 40px padding 5px => 30px*/
+  padding: 4px;
+  cursor: pointer;
+  border: #111111 1px solid;
+  background: #333333;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  transition-duration: 0.3s;
+  flex-direction: column;
 }
 .g-window .window-header .search-button {
-  font-size: 20px;
-  font-weight: bold;
+  height: 30px;
+  width: 30px; /* header 40px padding 5px => 30px*/
+  padding: 4px;
+  cursor: pointer;
+  border: #111111 1px solid;
+  background: #333333;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  transition-duration: 0.3s;
+  flex-direction: column;
 }
 .g-window .window-header .menu-dropdown {
-  font-size: 20px;
-  font-weight: bold;
+  height: 30px;
+  width: 30px; /* header 40px padding 5px => 30px*/
+  padding: 4px;
+  cursor: pointer;
+  border: #111111 1px solid;
+  background: #333333;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  transition-duration: 0.3s;
+  flex-direction: column;
 }
 .g-window .window-header .app-title {
   color: white;

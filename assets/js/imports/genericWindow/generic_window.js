@@ -56,7 +56,10 @@ export class BaseWindow {
   get _TabButton() {
     let tabButton = document.createElement('button');
     tabButton.className = 'tab-button';
-    tabButton.innerHTML = 'Tab';
+    let icon = document.createElement('img');
+    icon.src = '/assets/icons/Suru/Suru/scalable/ui/tab-new-symbolic.svg';
+    tabButton.appendChild(icon);
+
     tabButton.onclick = function () {
       console.log('tab button clicked');
     };
@@ -65,7 +68,9 @@ export class BaseWindow {
   get _searchButton() {
     let searchButton = document.createElement('button');
     searchButton.className = 'search-button';
-    searchButton.innerHTML = 'Search';
+    let icon = document.createElement('img');
+    icon.src = '/assets/icons/Suru/Suru/scalable/actions/system-search-symbolic.svg';
+    searchButton.appendChild(icon);
     searchButton.onclick = function () {
       console.log('search button clicked');
     };
@@ -74,7 +79,9 @@ export class BaseWindow {
   get _menuDropdown() {
     let menuDropdown = document.createElement('button');
     menuDropdown.className = 'menu-dropdown';
-    menuDropdown.innerHTML = 'Menu';
+    let icon = document.createElement('img');
+    icon.src = '/assets/icons/Suru/Suru/scalable/actions/open-menu-symbolic.svg';
+    menuDropdown.appendChild(icon);
     menuDropdown.onclick = function () {
       console.log('menu dropdown clicked');
     };
@@ -83,7 +90,7 @@ export class BaseWindow {
   get _appTitle() {
     let pTitle = document.createElement('p');
     pTitle.className = 'app-title';
-    pTitle.innerHTML = this.hasDefaultTitle ? 'DEFAULT' : this.titleContent;
+    pTitle.innerHTML = this.hasDefaultTitle ? 'BASE WINDOW' : this.titleContent;
     return pTitle;
   }
   get _windowControlButtons() {
@@ -129,7 +136,6 @@ export class BaseWindow {
     closeImg.src = '/assets/img/terminal/close.svg';
 
     close.onclick = function () {
- 
       let windowApp = this.parentNode.parentNode.parentNode;
       let desktop = document.getElementById('desktop');
       desktop.removeChild(windowApp);
@@ -244,4 +250,10 @@ export function _getCurrentPsoition(terminal) {
   } while (element);
 
   return { top: _top + 'px', left: _left + 'px' };
+}
+
+export function openBaseWindow() {
+  let baseWindow = new BaseWindow();
+  let app = baseWindow.build();
+  BaseWindow.addToDesktop(app);
 }
