@@ -5,7 +5,7 @@ class Notepad {
   baseWindow;
 
   constructor() {
-    this.baseWindow = new BaseWindow().addTitle('Notepad').addTabButton().addSeach().addMenuDropwdown();
+    this.baseWindow = new BaseWindow().addTitle('Notepad').addMenuDropwdown();
     this.baseWindowHTML = this.baseWindow.build();
   }
 
