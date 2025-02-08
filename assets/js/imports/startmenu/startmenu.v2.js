@@ -1,6 +1,7 @@
 import { openBaseWindow } from '../genericWindow/generic_window.js';
-import { openConsole } from './../terminal/terminal-console.v2.js';
+import { openConsole } from './../terminal/terminal-console.v3.js';
 import { openNotepad } from './../notepad/notepad2.js';
+
 export class StartMenu {
   startmenu = '';
 

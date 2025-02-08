@@ -151,13 +151,11 @@ export class BaseWindow {
   }
 
   static _setDraggable(div) {
-    // Obtener el contenedor del escritorio (asegúrate de que existe en el DOM)
     const desktop = document.getElementById('desktop');
 
     var offset = [0, 0];
     var isDown = false;
 
-    // Es importante que el div sea posicionable (por ejemplo, absolute)
     div.style.position = 'absolute';
 
     const moveToFront = (win) => {
@@ -165,7 +163,7 @@ export class BaseWindow {
       const children = Array.from(desktop.children);
       if (children.length <= 1) return;
 
-      // Calcular el z-index máximo de los hijos
+      // get the maximum z-index
       const maxZIndex = children.reduce((max, child) => {
         const z = parseInt(child.style.zIndex) || 0;
         return Math.max(max, z);
@@ -174,7 +172,7 @@ export class BaseWindow {
       // Obtener el z-index actual del elemento
       const currentZ = parseInt(win.style.zIndex) || 0;
 
-      // Si el z-index del elemento ya está en el máximo permitido, reiniciamos
+      // If the current z-index is the maximum, set all the other windows to 0
       if (currentZ >= 2147483647) {
         children.forEach((child) => {
           if (child !== win) {

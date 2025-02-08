@@ -1,4 +1,4 @@
-import { openConsole } from './imports/terminal/terminal-console.v2.js';
+import { openConsole } from './imports/terminal/terminal-console.v3.js';
 import { openNotepad } from './imports/notepad/notepad.js';
 import { StartMenu } from './imports/startmenu/startmenu.v2.js';
 

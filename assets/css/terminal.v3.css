@@ -1,0 +1,11 @@
+.terminal-console textarea {
+  width: 100%;
+  height: 100%;
+  resize: none;
+  box-sizing: border-box;
+  border-radius: 0 0 10px 10px;
+  color: black;
+}
+.terminal-console textarea:focus {
+  outline: none;
+}
