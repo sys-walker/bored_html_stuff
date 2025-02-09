@@ -82,7 +82,7 @@ class TerminalConsole {
       case /^$/.test(command):
         break;
       case /^help$/.test(command):
-        response = 'Supported commands: exit, uptime, neofetch, pwd, ls, cat, rm, cd, help';
+        response = 'Supported commands: exit, uptime, neofetch, pwd, ls, cat, rm, cd, help,clear';
         break;
       case /^uptime$/.test(command):
         response = TerminalCommands.uptime_str();
@@ -92,15 +92,12 @@ class TerminalConsole {
         response = TerminalCommands.changeDirectory(_lsParts[1] || USER_HOME_DIRECTORY);
         break;
       case /^rm/.test(command):
-        response = 'Not implemented yet';
-        /*
-
-        TODO: Implement properly the delete file output
-               let rmArgs = completeLine.split(' ');
-               let rmResult = TerminalCommands.deleteFile(rmArgs[1] || '.');
-         
-               printLineTerminal(rmResult, consoleContent);
-         */
+        let rmArgs = command.split(' ');
+        if (rmArgs.length < 2) {
+          response = 'rm: missing operand\n';
+          break;
+        }
+        response = TerminalCommands.deleteFile(rmArgs[1] || '.');
         break;
       default:
         response = `esh: command not found: ${command}`;
