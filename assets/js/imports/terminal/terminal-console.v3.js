@@ -1,6 +1,8 @@
 import { BaseWindow } from '../genericWindow/generic_window.js';
 import { Storage } from '../storage.js';
 import { CURRENT_DIRECTORY, USER_HOME_DIRECTORY, SystemCommands } from '../system.js';
+import { TerminalCommands } from './terminal-commands.js';
+
 class TerminalConsole {
   baseWindowHTML = '';
   baseWindow;
@@ -21,48 +23,99 @@ class TerminalConsole {
     let prompt = `${SystemCommands.getPrompt()}`;
     terminal.value = `Last login ${this.lastLoginLine}  on ttys004` + '\n' + prompt;
 
-    terminal.addEventListener('keydown', function (event) {
+    terminal.addEventListener('keydown', (event) => {
       const lines = terminal.value.split('\n');
       const lastLine = lines[lines.length - 1];
-      let cleared = false;
+
       // Prevents deleting the prompt
       if (event.key === 'Backspace' && lastLine.length <= prompt.length) {
         event.preventDefault();
       }
 
-      // Handles enter key
       if (event.key === 'Enter') {
         event.preventDefault(); // Prevents adding a new line
-        // Get the command in raw format
-        const command = lastLine.slice(prompt.length).trim();
-        let response;
-        if (command === 'test') {
-          response = 'test OK';
-        } else if (command === 'clear') {
-          response = '';
-          cleared = true;
-        } else {
-          if (command) {
-            response = 'not implemented';
-          } else {
-            response = '';
-          }
-        }
-
-        // Print the response
-        if (response !== '') {
-          terminal.value += '\n' + response + '\n' + prompt;
-        } else {
-          if (!cleared) {
-            terminal.value += '\n' + prompt;
-          } else {
-            terminal.value = prompt;
-          }
-        }
-
+        terminal.value = this._getCommandOutput(lastLine, terminal.value);
         terminal.scrollTop = terminal.scrollHeight;
+      } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+        //future implementation for command history
+        event.preventDefault();
       }
     });
+  }
+
+  _getCommandOutput(lastLine, currentOutput) {
+    let prompt = `${SystemCommands.getPrompt()}`;
+    let cleared = false;
+    // Get the command in raw format
+    const command = lastLine.slice(prompt.length).trim();
+    let response = '';
+
+    switch (true) {
+      case /^clear$/.test(command):
+        cleared = true;
+        break;
+      case /^neofetch$/.test(command):
+        response = TerminalCommands.neofetch();
+        break;
+      case /^exit$/.test(command):
+        let desktop = document.getElementById('desktop');
+        desktop.removeChild(this.baseWindowHTML);
+        return;
+      case /^pwd$/.test(command):
+        response = CURRENT_DIRECTORY;
+        break;
+      case /^ls/.test(command):
+        let lsParts = command.split(' ');
+        let children = TerminalCommands.listDirectory(lsParts[1] || '.');
+        children.forEach((child) => {
+          let childName = child.name + (child.type === 'dir' ? '/' : '');
+          response += childName + '\n';
+        });
+        break;
+      case /^cat/.test(command):
+        let catArgs = command.split(' ');
+        let fileLines = TerminalCommands.displayFile(catArgs[1] || '.');
+        fileLines.forEach((line) => {
+          response += line + '\n';
+        });
+        break;
+      case /^$/.test(command):
+        break;
+      case /^help$/.test(command):
+        response = 'Supported commands: exit, uptime, neofetch, pwd, ls, cat, rm, cd, help';
+        break;
+      case /^uptime$/.test(command):
+        response = TerminalCommands.uptime_str();
+        break;
+      case /^cd/.test(command):
+        //TODO: Implement properly the change directory output
+        let _lsParts = command.split(' ');
+        let result = TerminalCommands.changeDirectory(_lsParts[1] || USER_HOME_DIRECTORY);
+        console.log(result);
+
+        break;
+      case /^rm/.test(command):
+        response = 'Not implemented yet';
+        /*
+
+        TODO: Implement properly the delete file output
+               let rmArgs = completeLine.split(' ');
+               let rmResult = TerminalCommands.deleteFile(rmArgs[1] || '.');
+         
+               printLineTerminal(rmResult, consoleContent);
+         */
+        break;
+      default:
+        response = `esh: command not found: ${command}`;
+        break;
+    }
+
+    if (response !== '') {
+      currentOutput += `\n${response}\n${prompt}`;
+    } else {
+      currentOutput = cleared ? prompt : `${currentOutput}\n${prompt}`;
+    }
+    return currentOutput;
   }
 
   get lastLoginLine() {

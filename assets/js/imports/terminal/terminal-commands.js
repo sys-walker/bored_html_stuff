@@ -22,27 +22,27 @@ import {
 import { FileSystem } from './../filesystem/filesystem.js';
 
 export class TerminalCommands {
-  static neofetch(consoleContent, firstLineTerminal = '') {
+  static neofetch() {
     let newLine = `
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>${USER_LOGGED}@${N_HOST}</p>
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>-----------------------</p> 
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>OS: ${N_OS}</p>
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Host: ${N_HOST}</p>
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Kernel: ${N_KERNEL}</p>
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Uptime: ${getUptime()}</p> 
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Packages: ${N_PACKAGES}</p>
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Shell: ${N_SHELL}</p> 
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Resolution: ${N_RESOLUTION}</p>
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>DE: ${N_DE}</p> 
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>WM: ${'???'}</p> 
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>WM Theme: ${N_THEME}</p> 
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Terminal: ${N_TERMINAL}</p> 
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Terminal Font: ${N_TERMINAL_FONT}</p>
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>CPU: ${N_CPU}</p>
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>GPU: ${N_GPU}</p> 
-        <p style="color: #4AF626;margin: 0px;font-family: monospace;">:EEEEEEEEEEEEEEEEEEEEEEEE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Memory: ${N_MEMORY}</p> 
+                                         ${USER_LOGGED}@${N_HOST}
+        :EEEEEEEEEEEEEEEEEEEEEEEE:      ----------------------- 
+        :EEEEEEEEEEEEEEEEEEEEEEEE:      OS: ${N_OS}
+        :EEEEEE:                        Host: ${N_HOST}
+        :EEEEEE:                        Kernel: ${N_KERNEL}
+        :EEEEEE:                        Uptime: ${getUptime()} 
+        :EEEEEE:                        Packages: ${N_PACKAGES}
+        :EEEEEE:                        Shell: ${N_SHELL} 
+        :EEEEEEEEEEEEEEEEEEEEEEEE:      Resolution: ${N_RESOLUTION}
+        :EEEEEEEEEEEEEEEEEEEEEEEE:      DE: ${N_DE} 
+        :EEEEEE:                        WM: ${'???'}
+        :EEEEEE:                        WM Theme: ${N_THEME} 
+        :EEEEEE:                        Terminal: ${N_TERMINAL} 
+        :EEEEEE:                        Terminal Font: ${N_TERMINAL_FONT}
+        :EEEEEE:                        CPU: ${N_CPU}
+        :EEEEEEEEEEEEEEEEEEEEEEEE:      GPU: ${N_GPU} 
+        :EEEEEEEEEEEEEEEEEEEEEEEE:      Memory: ${N_MEMORY} 
     `;
-    consoleContent.innerHTML = '' + newLine;
+    return newLine;
   }
 
   static uptime_str() {
