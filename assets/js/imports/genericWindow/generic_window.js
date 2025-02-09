@@ -57,7 +57,7 @@ export class BaseWindow {
     let tabButton = document.createElement('button');
     tabButton.className = 'tab-button';
     let icon = document.createElement('img');
-    icon.src = '/assets/icons/Suru/Suru/scalable/ui/tab-new-symbolic.svg';
+    icon.src = './assets/icons/Suru/Suru/scalable/ui/tab-new-symbolic.svg';
     tabButton.appendChild(icon);
 
     tabButton.onclick = function () {
@@ -69,7 +69,7 @@ export class BaseWindow {
     let searchButton = document.createElement('button');
     searchButton.className = 'search-button';
     let icon = document.createElement('img');
-    icon.src = '/assets/icons/Suru/Suru/scalable/actions/system-search-symbolic.svg';
+    icon.src = './assets/icons/Suru/Suru/scalable/actions/system-search-symbolic.svg';
     searchButton.appendChild(icon);
     searchButton.onclick = function () {
       console.log('search button clicked');
@@ -80,7 +80,7 @@ export class BaseWindow {
     let menuDropdown = document.createElement('button');
     menuDropdown.className = 'menu-dropdown';
     let icon = document.createElement('img');
-    icon.src = '/assets/icons/Suru/Suru/scalable/actions/open-menu-symbolic.svg';
+    icon.src = './assets/icons/Suru/Suru/scalable/actions/open-menu-symbolic.svg';
     menuDropdown.appendChild(icon);
     menuDropdown.onclick = function () {
       console.log('menu dropdown clicked');
@@ -101,7 +101,7 @@ export class BaseWindow {
     let maximize = document.createElement('div');
     maximize.className = 'gw-button gw-maximize';
     let maximizeImg = document.createElement('img');
-    maximizeImg.src = '/assets/img/terminal/maximize.svg';
+    maximizeImg.src = './assets/img/terminal/maximize.svg';
 
     maximize.onclick = function () {
       let param = this;
@@ -133,7 +133,7 @@ export class BaseWindow {
     let close = document.createElement('div');
     close.className = 'gw-button gw-close';
     let closeImg = document.createElement('img');
-    closeImg.src = '/assets/img/terminal/close.svg';
+    closeImg.src = './assets/img/terminal/close.svg';
 
     close.onclick = function () {
       let windowApp = this.parentNode.parentNode.parentNode;

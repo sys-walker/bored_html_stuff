@@ -6,8 +6,8 @@ export class StartMenu {
   startmenu = '';
 
   allAppsCategories = [
-    { icon: '/assets/img/all.svg', name: 'all' },
-    { icon: '/assets/img/system.svg', name: 'system' },
+    { icon: './assets/img/all.svg', name: 'all' },
+    { icon: './assets/img/system.svg', name: 'system' },
     { icon: 'assets/img/config.svg', name: 'config' },
   ];
   allItemsList = [
@@ -15,7 +15,7 @@ export class StartMenu {
       category: 'system',
       name: 'Open Terminal',
       _name: 'terminal',
-      icon: '/assets/icons/Suru/Suru/scalable/apps/terminal-app-symbolic.svg',
+      icon: './assets/icons/Suru/Suru/scalable/apps/terminal-app-symbolic.svg',
       action: openConsole,
       args: [],
     },
@@ -23,7 +23,7 @@ export class StartMenu {
       category: 'config',
       name: 'Open Empty window',
       _name: 'generic window',
-      icon: '/assets/icons/Suru/Suru/scalable/apps/system-settings-symbolic.svg',
+      icon: './assets/icons/Suru/Suru/scalable/apps/system-settings-symbolic.svg',
       action: openBaseWindow,
       args: [],
     },
@@ -31,7 +31,7 @@ export class StartMenu {
       category: ' ',
       name: 'Open Notepad',
       _name: 'notepad',
-      icon: '/assets/icons/Suru/Suru/scalable/apps/notes-app-symbolic.svg',
+      icon: './assets/icons/Suru/Suru/scalable/apps/notes-app-symbolic.svg',
       action: openNotepad,
       args: [],
     },
