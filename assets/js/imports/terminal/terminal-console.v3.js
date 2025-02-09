@@ -88,11 +88,8 @@ class TerminalConsole {
         response = TerminalCommands.uptime_str();
         break;
       case /^cd/.test(command):
-        //TODO: Implement properly the change directory output
         let _lsParts = command.split(' ');
-        let result = TerminalCommands.changeDirectory(_lsParts[1] || USER_HOME_DIRECTORY);
-        console.log(result);
-
+        response = TerminalCommands.changeDirectory(_lsParts[1] || USER_HOME_DIRECTORY);
         break;
       case /^rm/.test(command):
         response = 'Not implemented yet';
@@ -109,7 +106,8 @@ class TerminalConsole {
         response = `esh: command not found: ${command}`;
         break;
     }
-
+    //checks if the prompt changed
+    prompt = `${SystemCommands.getPrompt()}`;
     if (response !== '') {
       currentOutput += `\n${response}\n${prompt}`;
     } else {
