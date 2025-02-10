@@ -129,7 +129,6 @@ class TerminalConsole {
       .replace(/,/g, '');
 
     Storage.setItem('shell-login-date', newLogin);
-    console.log(lastLogin ? lastLogin : newLogin);
 
     return lastLogin ? lastLogin : newLogin;
   }

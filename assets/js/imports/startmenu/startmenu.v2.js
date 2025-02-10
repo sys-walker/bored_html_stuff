@@ -1,6 +1,7 @@
 import { openBaseWindow } from '../genericWindow/generic_window.js';
 import { openConsole } from './../terminal/terminal-console.v3.js';
 import { openNotepad } from './../notepad/notepad2.js';
+import { openMapsApp } from './../maps/maps.js';
 
 export class StartMenu {
   startmenu = '';
@@ -28,11 +29,19 @@ export class StartMenu {
       args: [],
     },
     {
-      category: ' ',
+      category: '',
       name: 'Open Notepad',
       _name: 'notepad',
       icon: './assets/icons/Suru/Suru/scalable/apps/notes-app-symbolic.svg',
       action: openNotepad,
+      args: [],
+    },
+    {
+      category: '',
+      name: 'Open Maps',
+      _name: 'maps',
+      icon: './assets/icons/Suru/Suru/scalable/apps/maps-app-symbolic.svg',
+      action: openMapsApp,
       args: [],
     },
   ];
@@ -183,7 +192,6 @@ export class StartMenu {
     } else {
       //No items found
       startmenuContent.appendChild(this._createSideMenuList('all'));
-      s;
     }
   }
 }

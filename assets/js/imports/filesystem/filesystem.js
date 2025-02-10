@@ -90,7 +90,6 @@ export class FileSystem {
     }
   }
 
-
   static __deleteFile(pathArray, fs) {
     /**
      * MUST CHECK IF THE FILE EXISTS BEFORE CALLING THIS
@@ -137,7 +136,6 @@ export class FileSystem {
   static changeDirectory(path) {
     let pathArray = path.split('/');
     let fs = FileSystem.getFS();
-
     let found = FileSystem.__findDirectoryOrFile([...pathArray], fs);
     if (found !== undefined) {
       if (found.type === 'dir') {
@@ -181,7 +179,12 @@ export class FileSystem {
   }
   static __findDirectoryOrFile(pathArray, fs) {
     if (pathArray.every((segment) => segment === '')) {
-      return fs;
+      //Special case for '/'. '/' has no anteccesor and defined type as dir then we fake it for functiopnality
+      return {
+        name: 'root',
+        children: fs,
+        type: 'dir',
+      };
     } else {
       if (pathArray[0] === '') {
         pathArray.shift();
@@ -189,8 +192,6 @@ export class FileSystem {
       let intermitg = pathArray[0];
       for (let i = 0; i < fs.length; i++) {
         let segment = fs[i];
-        console.log(segment.name);
-
         if (segment.name === intermitg) {
           if (segment.type === 'file') {
             return segment;

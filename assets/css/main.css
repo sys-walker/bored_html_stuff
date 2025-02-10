@@ -1,9 +1,11 @@
+@import url('./Noto_Sans/NotoSansStyles.css');
 @import url('./window-app.css');
 @import url('./startmenu.css');
 @import url('./terminal.v3.css');
 @import url('./notepad.css');
 @import url('./generic-window.css');
 @import url('./notepad.v2.css');
+@import url('./map-app.css');
 body,
 html {
   margin: 0;
@@ -53,6 +55,7 @@ html {
       color: white;
       padding-right: 10px;
       padding-left: 10px;
+      font-family: 'Noto Sans', sans-serif;
     }
   }
 }

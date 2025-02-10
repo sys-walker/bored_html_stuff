@@ -58,8 +58,6 @@ export class TerminalCommands {
 
   static changeDirectory(fdir) {
     fdir = normalizePath(fdir);
-    console.log(fdir);
-
     let result = FileSystem.changeDirectory(fdir);
 
     if (result.error) {

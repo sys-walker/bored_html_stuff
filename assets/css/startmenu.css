@@ -9,6 +9,7 @@
   border-radius: 2px;
   display: flex;
   flex-direction: column;
+  font-family: 'Noto Sans', sans-serif;
 
   #searchbar {
     height: 30px;
