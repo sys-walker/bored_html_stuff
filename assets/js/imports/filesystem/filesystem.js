@@ -116,6 +116,10 @@ export class FileSystem {
     }
   }
   static deleteFile(path) {
+    if (path === '/') {
+      return { error: true, message: `Cannot delete '/' by design` };
+    }
+
     let pathArray = path.split('/');
     let fs = FileSystem.getFS();
 
@@ -210,6 +214,9 @@ export class FileSystem {
   }
 
   static deleteFileOrDirectory(path) {
+    if (path === '/') {
+      return { error: true, message: `Cannot delete '/' by design` };
+    }
     let pathArray = path.split('/');
     let fs = FileSystem.getFS();
 
