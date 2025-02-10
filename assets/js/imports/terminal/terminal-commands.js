@@ -104,4 +104,18 @@ export class TerminalCommands {
     // }
     return result.message;
   }
+  static deleteFileOrDirectory(fdir) {
+    fdir = normalizePath(fdir);
+    let result = FileSystem.deleteFileOrDirectory(fdir);
+
+    // if (result.error) {
+    //   return result.message;
+    // } else {
+    //   return result.message;
+    // }
+    return result.message;
+  }
+
+
+
 }

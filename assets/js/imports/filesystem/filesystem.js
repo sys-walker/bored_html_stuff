@@ -126,7 +126,7 @@ export class FileSystem {
         Storage.setItem('fs', fs); //update FS
         return { error: false, message: `${pathArray.at(-1)} deleted` };
       } else {
-        return { error: true, message: `${pathArray.at(-1)}: is a directory use -r option (Not implemented)` };
+        return { error: true, message: `${pathArray.at(-1)}: is a directory use -r option ` };
       }
     } else {
       return { error: true, message: `${path}: Not found` };
@@ -206,6 +206,21 @@ export class FileSystem {
         }
       }
       return undefined;
+    }
+  }
+
+  static deleteFileOrDirectory(path) {
+    let pathArray = path.split('/');
+    let fs = FileSystem.getFS();
+
+    let found = FileSystem.__findDirectoryOrFile([...pathArray], fs);
+    if (found !== undefined) {
+      console.log('found', found);
+      FileSystem.__deleteFile([...pathArray], fs);
+      Storage.setItem('fs', fs); //update FS
+      return { error: false, message: `${pathArray.at(-1)} deleted` };
+    } else {
+      return { error: true, message: `${path}: Not found` };
     }
   }
 }

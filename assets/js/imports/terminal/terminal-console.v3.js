@@ -97,7 +97,37 @@ class TerminalConsole {
           response = 'rm: missing operand\n';
           break;
         }
-        response = TerminalCommands.deleteFile(rmArgs[1] || '.');
+        rmArgs.shift(); //removes the rm commandname
+
+
+        let r = rmArgs.reduce(
+          (result, currenVal) => {
+            let updatedRes = result;
+            if (currenVal.startsWith('-')) {
+              //is a flag commanc
+              updatedRes.flags.push(currenVal);
+            } else {
+              //is a file
+              updatedRes.files.push(currenVal);
+            }
+            return updatedRes;
+          },
+          { flags: [], files: [] }
+        );
+
+        let files2delete = r.files;
+        let flags = r.flags;
+
+        if (flags.includes('-r')) {
+          files2delete.forEach((file) => {
+            response += TerminalCommands.deleteFileOrDirectory(file) + '\n';
+          });
+        } else {
+          files2delete.forEach((file) => {
+            response += TerminalCommands.deleteFile(file) + '\n';
+          });
+        }
+
         break;
       default:
         response = `esh: command not found: ${command}`;
