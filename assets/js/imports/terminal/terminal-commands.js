@@ -116,6 +116,9 @@ export class TerminalCommands {
     return result.message;
   }
 
-
-
+  static createDirectory(fname) {
+    let fdir = normalizePath(fname);
+    let result = FileSystem.createDirectory(fdir);
+      return result.message;
+  }
 }

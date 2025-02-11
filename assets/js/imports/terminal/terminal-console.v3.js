@@ -99,7 +99,6 @@ class TerminalConsole {
         }
         rmArgs.shift(); //removes the rm commandname
 
-
         let r = rmArgs.reduce(
           (result, currenVal) => {
             let updatedRes = result;
@@ -129,6 +128,22 @@ class TerminalConsole {
         }
 
         break;
+
+      case /^(md|mkdir)/.test(command):
+        let mvArgs = command.split(' ');
+        if (mvArgs.length < 2) {
+          response = 'mv: missing operand\n';
+          break;
+        }
+        mvArgs.shift(); //removes the rm commandname
+        let files2create = mvArgs;
+
+        files2create.forEach((file) => {
+          response += TerminalCommands.createDirectory(file) + '\n';
+        });
+
+        break;
+
       default:
         response = `esh: command not found: ${command}`;
         break;

@@ -137,6 +137,67 @@ export class FileSystem {
     }
   }
 
+  static createDirectory(path) {
+    if (path === '/') {
+      return { error: true, message: `Cannot recreate '/' by design` };
+    }
+
+    let pathArray = path.split('/');
+    let fs = FileSystem.getFS();
+    let found = FileSystem.__findDirectoryOrFile([...pathArray], fs);
+
+    if (found === undefined) {
+      let create = FileSystem.__createDirectory([...pathArray], fs);
+      if (create) {
+        Storage.setItem('fs', fs); //update FS
+      } else {
+        return { error: true, message: `${path}: Could not create folder` };
+      }
+
+      return { error: false, message: `${path} created` };
+    } else {
+      if (found.type === 'file') {
+        return { error: true, message: `cant create directory in files types` };
+      }
+
+      return { error: true, message: `${path}: Already exists` };
+    }
+  }
+
+  static __createDirectory(pathArray, fs, createNonExistent = false) {
+    console.log(pathArray);
+
+    if (pathArray.length === 0) {
+      return false;
+    } else {
+      if (pathArray.length === 2 && pathArray[0] === '') {
+        //create folder at '/'
+        let obj = { name: pathArray[1], children: [], type: 'dir' };
+        fs.push(obj);
+        return true;
+      } else {
+        pathArray.shift();
+        let intermitg = pathArray[0];
+
+        for (let i = 0; i < fs.length; i++) {
+          let intermitgDirectory = fs[i];
+          if (intermitgDirectory.name === intermitg) {
+            if (intermitgDirectory.type === 'file') {
+              return false;
+            }
+            return FileSystem.__createDirectory(pathArray, intermitgDirectory.children, createNonExistent);
+          }
+        }
+        if (pathArray.length === 1) {
+          let obj = { name: pathArray[0], children: [], type: 'dir' };
+          fs.push(obj);
+          return true;
+        }
+        return false;
+      }
+    }
+  }
+
   static changeDirectory(path) {
     let pathArray = path.split('/');
     let fs = FileSystem.getFS();
