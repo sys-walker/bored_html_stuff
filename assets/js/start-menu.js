@@ -1,7 +1,7 @@
 import { openConsole } from './imports/terminal/terminal-console.v3.js';
 import { openNotepad } from './imports/notepad/notepad.js';
 import { StartMenu } from './imports/startmenu/startmenu.v2.js';
-
+import { incrementMonth, decrementMonth, currentMonth } from './imports/calendar/Calendar.js';
 function openStartMenu() {
   let existStartMenu = document.getElementById('startmenu');
   if (existStartMenu) {
@@ -27,4 +27,6 @@ window.openStartMenu = openStartMenu;
 window.openConsole = openConsole;
 window.openNotepad = openNotepad;
 //For development purposes
-//openNotepad();
+window.increment = incrementMonth;
+window.decrement = decrementMonth;
+currentMonth();
