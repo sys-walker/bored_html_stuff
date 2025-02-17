@@ -1,5 +1,5 @@
 import { createWindowHeader, createWindowButtons, createWindowTitle, setDraggable } from '../window-app.js';
-import { FileSystem } from '../filesystem/filesystem.js';
+//import { FileSystem } from '../filesystem/filesystem.js';
 /*
 
 Create Notepad window with draggable functionality

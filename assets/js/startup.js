@@ -1,32 +1,18 @@
-import { autoHideElements } from './imports/desktop.js';
-import { saveBootTime, getUptime } from './imports/system.js';
-function getDate(dateOptions) {
-  if (dateOptions === undefined) {
-    dateOptions = {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-    };
-  }
-  const formattedDate = new Date().toLocaleString('en-US', dateOptions).replace(',', '');
-  return formattedDate;
-}
-
-function setDesktopClock() {
-  //Load time
-  let timeElement = document.getElementById('timeval');
-  timeElement.innerHTML = getDate();
-
-  setInterval(function () {
-    // Get the current date and time
-    timeElement.innerHTML = getDate();
-    timeElement.style.minWidth = window.getComputedStyle(timeElement).width;
-  }, 1000);
-}
+import { startDesktopElements } from './imports/desktop.js';
+import { openConsole } from './imports/apps/terminal/terminal-console.v3.js';
+import { openNotepad } from './imports/apps/notepad/notepad2.js';
+import { openStartMenu } from './imports/startmenu/startmenu.v2.js';
+import { incrementMonth, decrementMonth, currentMonth } from './imports/apps/calendar/Calendar.js';
 
 document.body.onload = function () {
-  saveBootTime();
-  console.log(getUptime());
-  setDesktopClock();
-  autoHideElements();
+  startDesktopElements();
 };
+
+//calls from startmenu accessible from body HTML
+window.openStartMenu = openStartMenu;
+window.openConsole = openConsole;
+window.openNotepad = openNotepad;
+//For development purposes
+window.increment = incrementMonth;
+window.decrement = decrementMonth;
+currentMonth();

@@ -1,4 +1,4 @@
-import { BaseWindow } from '../genericWindow/generic_window.js';
+import { BaseWindow } from '../../generic_elements/generic_window.js';
 
 class MapsApp {
   baseWindowHTML = '';

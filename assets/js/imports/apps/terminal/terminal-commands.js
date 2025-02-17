@@ -17,9 +17,9 @@ import {
   USER_LOGGED,
   normalizePath,
   SystemCommands,
-} from '../system.js';
+} from '../../os-core/system.js';
 
-import { FileSystem } from './../filesystem/filesystem.js';
+import { FileSystem } from '../../os-core/filesystem/filesystem.js';
 
 export class TerminalCommands {
   static neofetch() {
@@ -119,6 +119,6 @@ export class TerminalCommands {
   static createDirectory(fname) {
     let fdir = normalizePath(fname);
     let result = FileSystem.createDirectory(fdir);
-      return result.message;
+    return result.message;
   }
 }
