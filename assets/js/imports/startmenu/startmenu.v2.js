@@ -197,12 +197,39 @@ export class StartMenu {
   }
 }
 
+const moveToFront = (win) => {
+  const desktop = win.parentNode;
+  const children = Array.from(desktop.children);
+  if (children.length <= 1) return;
+
+  // get the maximum z-index
+  const maxZIndex = children.reduce((max, child) => {
+    const z = parseInt(child.style.zIndex) || 0;
+    return Math.max(max, z);
+  }, 0);
+
+  // Obtener el z-index actual del elemento
+  const currentZ = parseInt(win.style.zIndex) || 0;
+
+  // If the current z-index is the maximum, set all the other windows to 0
+  if (currentZ >= 2147483647) {
+    children.forEach((child) => {
+      if (child !== win) {
+        child.style.zIndex = 0;
+      }
+    });
+    win.style.zIndex = 1;
+  } else {
+    win.style.zIndex = maxZIndex + 1;
+  }
+};
 export function openStartMenu() {
   let existStartMenu = document.getElementById('startmenu');
   if (existStartMenu) {
     desktop.removeChild(existStartMenu);
   } else {
     let startmenu = new StartMenu().startmenu;
+
     console.log(startmenu);
 
     startmenu.addEventListener('click', function (event) {
@@ -210,32 +237,7 @@ export function openStartMenu() {
       //prevent close startmenu when click on it
       console.log('clicked on startmenu');
       //focus
-      const moveToFront = (win) => {
-        const desktop = win.parentNode;
-        const children = Array.from(desktop.children);
-        if (children.length <= 1) return;
 
-        // get the maximum z-index
-        const maxZIndex = children.reduce((max, child) => {
-          const z = parseInt(child.style.zIndex) || 0;
-          return Math.max(max, z);
-        }, 0);
-
-        // Obtener el z-index actual del elemento
-        const currentZ = parseInt(win.style.zIndex) || 0;
-
-        // If the current z-index is the maximum, set all the other windows to 0
-        if (currentZ >= 2147483647) {
-          children.forEach((child) => {
-            if (child !== win) {
-              child.style.zIndex = 0;
-            }
-          });
-          win.style.zIndex = 1;
-        } else {
-          win.style.zIndex = maxZIndex + 1;
-        }
-      };
       moveToFront(startmenu);
     });
 
