@@ -1,4 +1,4 @@
-export class Storage {
+export class TinyStorage {
   static setItem(key, value) {
     localStorage.setItem(
       key,

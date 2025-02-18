@@ -1,5 +1,5 @@
 import { BaseWindow } from '../../generic_elements/generic_window.js';
-import { Storage } from '../../os-core/storage/storage.js';
+import { TinyStorage } from '../../os-core/storage/light-storage.js';
 import { CURRENT_DIRECTORY, USER_HOME_DIRECTORY, SystemCommands } from '../../os-core/system.js';
 import { TerminalCommands } from './terminal-commands.js';
 
@@ -159,7 +159,7 @@ class TerminalConsole {
   }
 
   get lastLoginLine() {
-    let lastLogin = Storage.getItem('shell-login-date');
+    let lastLogin = TinyStorage.getItem('shell-login-date');
     let newLogin = new Date()
       .toLocaleString('en-US', {
         weekday: 'short',
@@ -173,7 +173,7 @@ class TerminalConsole {
       })
       .replace(/,/g, '');
 
-    Storage.setItem('shell-login-date', newLogin);
+    TinyStorage.setItem('shell-login-date', newLogin);
 
     return lastLogin ? lastLogin : newLogin;
   }

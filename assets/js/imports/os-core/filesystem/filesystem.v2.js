@@ -1,8 +1,7 @@
 import { LStorage } from '../storage/large-storage.js';
-import { LStorage as Storage } from '../storage/large-storage.js';
 export class FileSystem {
   static async initFS() {
-    let fs = await Storage.getItem('fs');
+    let fs = await LStorage.getItem('fs');
 
     let initialFS = [
       {
@@ -49,7 +48,7 @@ export class FileSystem {
   }
   static async getFS() {
     await FileSystem.initFS();
-    return await Storage.getItem('fs');
+    return await LStorage.getItem('fs');
   }
 
   //   static createFile(path, name, content) {
@@ -60,7 +59,7 @@ export class FileSystem {
   //     if (canAdd) {
   //       FileSystem.__AddRec(pathArray, obj, fs);
   //     }
-  //     Storage.setItem('fs', fs);
+  //     LStorage.setItem('fs', fs);
   //   }
 
   //   static __canAddFile(pathArray, fs) {
@@ -157,7 +156,7 @@ export class FileSystem {
     if (found !== undefined) {
       if (found.type === 'file') {
         await FileSystem.__deleteFile([...pathArray], fs);
-        await Storage.setItem('fs', fs); //update FS
+        await LStorage.setItem('fs', fs); //update FS
         return { error: false, message: `${pathArray.at(-1)} deleted` };
       } else {
         return { error: true, message: `${pathArray.at(-1)}: is a directory use -r option ` };
@@ -179,7 +178,7 @@ export class FileSystem {
     if (found === undefined) {
       let create = await FileSystem.__createDirectory([...pathArray], fs);
       if (create) {
-        Storage.setItem('fs', fs); //update FS
+        LStorage.setItem('fs', fs); //update FS
       } else {
         return { error: true, message: `${path}: Could not create folder` };
       }
@@ -315,7 +314,7 @@ export class FileSystem {
     if (found !== undefined) {
       console.log('found', found);
       await FileSystem.__deleteFile([...pathArray], fs);
-      await Storage.setItem('fs', fs); //update FS
+      await LStorage.setItem('fs', fs); //update FS
       return { error: false, message: `${pathArray.at(-1)} deleted` };
     } else {
       return { error: true, message: `${path}: Not found` };
