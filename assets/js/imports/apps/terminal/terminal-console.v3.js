@@ -74,7 +74,7 @@ class TerminalConsole {
         break;
       case /^cat/.test(command):
         let catArgs = command.split(' ');
-        let fileLines = TerminalCommands.displayFile(catArgs[1] || '.');
+        let fileLines = await TerminalCommands.displayFile(catArgs[1] || '.');
         fileLines.forEach((line) => {
           response += line + '\n';
         });
@@ -89,7 +89,7 @@ class TerminalConsole {
         break;
       case /^cd/.test(command):
         let _lsParts = command.split(' ');
-        response = TerminalCommands.changeDirectory(_lsParts[1] || USER_HOME_DIRECTORY);
+        response = await TerminalCommands.changeDirectory(_lsParts[1] || USER_HOME_DIRECTORY);
         break;
       case /^rm/.test(command):
         let rmArgs = command.split(' ');
@@ -118,13 +118,13 @@ class TerminalConsole {
         let flags = r.flags;
 
         if (flags.includes('-r')) {
-          files2delete.forEach((file) => {
-            response += TerminalCommands.deleteFileOrDirectory(file) + '\n';
-          });
+          for (const file of files2delete) {
+            response += (await TerminalCommands.deleteFileOrDirectory(file)) + '\n';
+          }
         } else {
-          files2delete.forEach((file) => {
-            response += TerminalCommands.deleteFile(file) + '\n';
-          });
+          for (const file of files2delete) {
+            response += (await TerminalCommands.deleteFile(file)) + '\n';
+          }
         }
 
         break;
@@ -138,9 +138,9 @@ class TerminalConsole {
         mvArgs.shift(); //removes the rm commandname
         let files2create = mvArgs;
 
-        files2create.forEach((file) => {
-          response += TerminalCommands.createDirectory(file) + '\n';
-        });
+        for (const file of files2create) {
+          response += (await TerminalCommands.createDirectory(file)) + '\n';
+        }
 
         break;
 

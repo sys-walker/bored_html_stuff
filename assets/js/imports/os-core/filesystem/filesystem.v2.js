@@ -119,128 +119,129 @@ export class FileSystem {
   //     }
   //   }
 
-  //   static __deleteFile(pathArray, fs) {
-  //     /**
-  //      * MUST CHECK IF THE FILE EXISTS BEFORE CALLING THIS
-  //      *
-  //      * assumed the last path segment is a file
-  //      *
-  //      */
-  //     if (pathArray.length === 2) {
-  //       let index = fs.findIndex((file) => file.name === pathArray[1]);
-  //       if (index > -1) {
-  //         fs.splice(index, 1);
-  //       } else {
-  //         //error
-  //       }
-  //     } else {
-  //       if (pathArray.length !== 2) {
-  //         pathArray.shift();
-  //         let nextPathSegment = pathArray[0];
-  //         let nextFsLevel = fs.find((element) => element.name === nextPathSegment);
-  //         return FileSystem.__deleteFile(pathArray, nextFsLevel.children);
-  //       } else {
-  //         //error
-  //       }
-  //     }
-  //   }
-  //   static deleteFile(path) {
-  //     if (path === '/') {
-  //       return { error: true, message: `Cannot delete '/' by design` };
-  //     }
+  static async __deleteFile(pathArray, fs) {
+    /**
+     * MUST CHECK IF THE FILE EXISTS BEFORE CALLING THIS
+     *
+     * assumed the last path segment is a file
+     * This function does not distinguish between files and directories
+     * if folder is passed it will delete the folder and all its contents
+     */
+    if (pathArray.length === 2) {
+      let index = fs.findIndex((file) => file.name === pathArray[1]);
+      if (index > -1) {
+        fs.splice(index, 1);
+      } else {
+        //error
+      }
+    } else {
+      if (pathArray.length !== 2) {
+        pathArray.shift();
+        let nextPathSegment = pathArray[0];
+        let nextFsLevel = fs.find((element) => element.name === nextPathSegment);
+        return await FileSystem.__deleteFile(pathArray, nextFsLevel.children);
+      } else {
+        //error
+      }
+    }
+  }
+  static async deleteFile(path) {
+    if (path === '/') {
+      return { error: true, message: `Cannot delete '/' by design` };
+    }
 
-  //     let pathArray = path.split('/');
-  //     let fs = FileSystem.getFS();
+    let pathArray = path.split('/');
+    let fs = await FileSystem.getFS();
 
-  //     let found = FileSystem.__findDirectoryOrFile([...pathArray], fs);
-  //     if (found !== undefined) {
-  //       if (found.type === 'file') {
-  //         FileSystem.__deleteFile([...pathArray], fs);
-  //         Storage.setItem('fs', fs); //update FS
-  //         return { error: false, message: `${pathArray.at(-1)} deleted` };
-  //       } else {
-  //         return { error: true, message: `${pathArray.at(-1)}: is a directory use -r option ` };
-  //       }
-  //     } else {
-  //       return { error: true, message: `${path}: Not found` };
-  //     }
-  //   }
+    let found = await FileSystem.__findDirectoryOrFile([...pathArray], fs);
+    if (found !== undefined) {
+      if (found.type === 'file') {
+        await FileSystem.__deleteFile([...pathArray], fs);
+        await Storage.setItem('fs', fs); //update FS
+        return { error: false, message: `${pathArray.at(-1)} deleted` };
+      } else {
+        return { error: true, message: `${pathArray.at(-1)}: is a directory use -r option ` };
+      }
+    } else {
+      return { error: true, message: `${path}: Not found` };
+    }
+  }
 
-  //   static createDirectory(path) {
-  //     if (path === '/') {
-  //       return { error: true, message: `Cannot recreate '/' by design` };
-  //     }
+  static async createDirectory(path) {
+    if (path === '/') {
+      return { error: true, message: `Cannot recreate '/' by design` };
+    }
 
-  //     let pathArray = path.split('/');
-  //     let fs = FileSystem.getFS();
-  //     let found = FileSystem.__findDirectoryOrFile([...pathArray], fs);
+    let pathArray = path.split('/');
+    let fs = await FileSystem.getFS();
+    let found = await FileSystem.__findDirectoryOrFile([...pathArray], fs);
 
-  //     if (found === undefined) {
-  //       let create = FileSystem.__createDirectory([...pathArray], fs);
-  //       if (create) {
-  //         Storage.setItem('fs', fs); //update FS
-  //       } else {
-  //         return { error: true, message: `${path}: Could not create folder` };
-  //       }
+    if (found === undefined) {
+      let create = await FileSystem.__createDirectory([...pathArray], fs);
+      if (create) {
+        Storage.setItem('fs', fs); //update FS
+      } else {
+        return { error: true, message: `${path}: Could not create folder` };
+      }
 
-  //       return { error: false, message: `${path} created` };
-  //     } else {
-  //       if (found.type === 'file') {
-  //         return { error: true, message: `cant create directory in files types` };
-  //       }
+      return { error: false, message: `${path} created` };
+    } else {
+      if (found.type === 'file') {
+        return { error: true, message: `cant create directory in files types` };
+      }
 
-  //       return { error: true, message: `${path}: Already exists` };
-  //     }
-  //   }
+      return { error: true, message: `${path}: Already exists` };
+    }
+  }
 
-  //   static __createDirectory(pathArray, fs, createNonExistent = false) {
-  //     console.log(pathArray);
+  static async __createDirectory(pathArray, fs, createNonExistent = false) {
+    console.log(pathArray);
 
-  //     if (pathArray.length === 0) {
-  //       return false;
-  //     } else {
-  //       if (pathArray.length === 2 && pathArray[0] === '') {
-  //         //create folder at '/'
-  //         let obj = { name: pathArray[1], children: [], type: 'dir' };
-  //         fs.push(obj);
-  //         return true;
-  //       } else {
-  //         pathArray.shift();
-  //         let intermitg = pathArray[0];
+    if (pathArray.length === 0) {
+      return false;
+    } else {
+      if (pathArray.length === 2 && pathArray[0] === '') {
+        //create folder at '/'
+        let obj = { name: pathArray[1], children: [], type: 'dir' };
+        fs.push(obj);
+        return true;
+      } else {
+        pathArray.shift();
+        let intermitg = pathArray[0];
 
-  //         for (let i = 0; i < fs.length; i++) {
-  //           let intermitgDirectory = fs[i];
-  //           if (intermitgDirectory.name === intermitg) {
-  //             if (intermitgDirectory.type === 'file') {
-  //               return false;
-  //             }
-  //             return FileSystem.__createDirectory(pathArray, intermitgDirectory.children, createNonExistent);
-  //           }
-  //         }
-  //         if (pathArray.length === 1) {
-  //           let obj = { name: pathArray[0], children: [], type: 'dir' };
-  //           fs.push(obj);
-  //           return true;
-  //         }
-  //         return false;
-  //       }
-  //     }
-  //   }
+        for (let i = 0; i < fs.length; i++) {
+          let intermitgDirectory = fs[i];
+          if (intermitgDirectory.name === intermitg) {
+            if (intermitgDirectory.type === 'file') {
+              return false;
+            }
+            return await FileSystem.__createDirectory(pathArray, intermitgDirectory.children, createNonExistent);
+          }
+        }
+        if (pathArray.length === 1) {
+          let obj = { name: pathArray[0], children: [], type: 'dir' };
+          fs.push(obj);
+          return true;
+        }
+        return false;
+      }
+    }
+  }
 
-  //   static changeDirectory(path) {
-  //     let pathArray = path.split('/');
-  //     let fs = FileSystem.getFS();
-  //     let found = FileSystem.__findDirectoryOrFile([...pathArray], fs);
-  //     if (found !== undefined) {
-  //       if (found.type === 'dir') {
-  //         return { error: false, message: '' };
-  //       } else {
-  //         return { error: true, message: `${pathArray.at(-1)}: Not a directory` };
-  //       }
-  //     } else {
-  //       return { error: true, message: `${path}: Not found` };
-  //     }
-  //   }
+  static async changeDirectory(path) {
+    let pathArray = path.split('/');
+    let fs = await FileSystem.getFS();
+    let found = await FileSystem.__findDirectoryOrFile([...pathArray], fs);
+    if (found !== undefined) {
+      if (found.type === 'dir') {
+        return { error: false, message: '' };
+      } else {
+        return { error: true, message: `${pathArray.at(-1)}: Not a directory` };
+      }
+    } else {
+      return { error: true, message: `${path}: Not found` };
+    }
+  }
   static async getLS(path) {
     let pathArray = path.split('/');
     let fs = await FileSystem.getFS();
@@ -256,21 +257,21 @@ export class FileSystem {
       return { error: true, children: [], message: `${path}: Not found` };
     }
   }
-  //   static getFile(path) {
-  //     let pathArray = path.split('/');
-  //     let fs = FileSystem.getFS();
-  //     let found = FileSystem.__findDirectoryOrFile([...pathArray], fs);
+  static async getFile(path) {
+    let pathArray = path.split('/');
+    let fs = await FileSystem.getFS();
+    let found = await FileSystem.__findDirectoryOrFile([...pathArray], fs);
 
-  //     if (found !== undefined) {
-  //       if (found.type === 'file') {
-  //         return { error: false, lines: found.content.split('\n'), message: '' };
-  //       } else {
-  //         return { error: true, lines: [], message: `${pathArray.at(-1)}: Not a file` };
-  //       }
-  //     } else {
-  //       return { error: true, lines: [], message: `${path}: Not found` };
-  //     }
-  //   }
+    if (found !== undefined) {
+      if (found.type === 'file') {
+        return { error: false, lines: found.content.split('\n'), message: '' };
+      } else {
+        return { error: true, lines: [], message: `${pathArray.at(-1)}: Not a file` };
+      }
+    } else {
+      return { error: true, lines: [], message: `${path}: Not found` };
+    }
+  }
   static async __findDirectoryOrFile(pathArray, fs) {
     if (pathArray.every((segment) => segment === '')) {
       //Special case for '/'. '/' has no anteccesor and defined type as dir then we fake it for functiopnality
@@ -303,23 +304,23 @@ export class FileSystem {
     }
   }
 
-  //   static deleteFileOrDirectory(path) {
-  //     if (path === '/') {
-  //       return { error: true, message: `Cannot delete '/' by design` };
-  //     }
-  //     let pathArray = path.split('/');
-  //     let fs = FileSystem.getFS();
+  static async deleteFileOrDirectory(path) {
+    if (path === '/') {
+      return { error: true, message: `Cannot delete '/' by design` };
+    }
+    let pathArray = path.split('/');
+    let fs = await FileSystem.getFS();
 
-  //     let found = FileSystem.__findDirectoryOrFile([...pathArray], fs);
-  //     if (found !== undefined) {
-  //       console.log('found', found);
-  //       FileSystem.__deleteFile([...pathArray], fs);
-  //       Storage.setItem('fs', fs); //update FS
-  //       return { error: false, message: `${pathArray.at(-1)} deleted` };
-  //     } else {
-  //       return { error: true, message: `${path}: Not found` };
-  //     }
-  //   }
+    let found = await FileSystem.__findDirectoryOrFile([...pathArray], fs);
+    if (found !== undefined) {
+      console.log('found', found);
+      await FileSystem.__deleteFile([...pathArray], fs);
+      await Storage.setItem('fs', fs); //update FS
+      return { error: false, message: `${pathArray.at(-1)} deleted` };
+    } else {
+      return { error: true, message: `${path}: Not found` };
+    }
+  }
 }
 
 /*

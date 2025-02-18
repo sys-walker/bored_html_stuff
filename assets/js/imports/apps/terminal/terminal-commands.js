@@ -56,9 +56,11 @@ export class TerminalCommands {
     return `${currentDate} up ${uptime}`;
   }
 
-  static changeDirectory(fdir) {
+  static async changeDirectory(fdir) {
+    console.log('async cd');
+
     fdir = normalizePath(fdir);
-    let result = FileSystem.changeDirectory(fdir);
+    let result = await FileSystem2.changeDirectory(fdir);
 
     if (result.error) {
       return result.message;
@@ -68,6 +70,7 @@ export class TerminalCommands {
   }
 
   static async listDirectory(fdir) {
+    console.log('async ls');
     fdir = normalizePath(fdir);
     let result = await FileSystem2.getLS(fdir);
     if (result.error) {
@@ -83,9 +86,10 @@ export class TerminalCommands {
     }
   }
 
-  static displayFile(fdir) {
+  static async displayFile(fdir) {
+    console.log('async cat');
     fdir = normalizePath(fdir);
-    let result = FileSystem.getFile(fdir);
+    let result = await FileSystem2.getFile(fdir);
     if (result.error) {
       return [result.message];
     } else {
@@ -93,9 +97,11 @@ export class TerminalCommands {
     }
   }
 
-  static deleteFile(fdir) {
+  static async deleteFile(fdir) {
+    console.log('async rm file');
+
     fdir = normalizePath(fdir);
-    let result = FileSystem.deleteFile(fdir);
+    let result = await FileSystem2.deleteFile(fdir);
 
     // if (result.error) {
     //   return result.message;
@@ -104,9 +110,11 @@ export class TerminalCommands {
     // }
     return result.message;
   }
-  static deleteFileOrDirectory(fdir) {
+  static async deleteFileOrDirectory(fdir) {
+    console.log('async rm -r');
+
     fdir = normalizePath(fdir);
-    let result = FileSystem.deleteFileOrDirectory(fdir);
+    let result = await FileSystem2.deleteFileOrDirectory(fdir);
 
     // if (result.error) {
     //   return result.message;
@@ -116,9 +124,11 @@ export class TerminalCommands {
     return result.message;
   }
 
-  static createDirectory(fname) {
+  static async createDirectory(fname) {
+    console.log('async mkdir');
+
     let fdir = normalizePath(fname);
-    let result = FileSystem.createDirectory(fdir);
+    let result = await FileSystem2.createDirectory(fdir);
     return result.message;
   }
 }
