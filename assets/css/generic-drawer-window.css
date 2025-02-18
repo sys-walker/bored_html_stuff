@@ -1,0 +1,92 @@
+:root {
+  --default-window-height: 400px;
+  --default-window-width: 600px;
+  --window-border-radius: 10px;
+  --default-window-background: rgba(34, 34, 34, 1);
+  --window-header-height: 40px;
+  --drawer-width: 182px;
+}
+
+.gd-window {
+  height: var(--default-window-height, 400px);
+  width: var(--default-window-width, 600px);
+  border-radius: var(--window-border-radius, 10px);
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  font-family: 'Noto Sans', sans-serif;
+}
+.gd-window .gd-drawer {
+  border-radius: var(--window-border-radius, 10px) 0px 0px var(--window-border-radius, 10px);
+  width: var(--drawer-width, 182px);
+  height: 100%;
+  box-sizing: border-box;
+  background-color: #333333;
+}
+.gd-window .gd-drawer-content {
+  border-radius: 0px var(--window-border-radius, 10px) var(--window-border-radius, 10px) 0px;
+  width: calc(100% - var(--drawer-width, 182px));
+  height: 100%;
+  border-left: 1px solid #4d4d4d;
+  box-sizing: border-box;
+  background-color: #333333;
+}
+
+.gd-drawer-header,
+.gd-drawer-content-header {
+  height: var(--window-header-height, 40px);
+  background-color: var(--default-window-background, rgba(34, 34, 34, 1));
+}
+.gd-drawer-content-header {
+  border-radius: 0px var(--window-border-radius, 10px) 0px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: var(--window-header-height, 40px);
+  width: 100%;
+  padding: 5px 10px 5px 10px;
+  font-family: 'Noto Sans', sans-serif;
+  box-sizing: border-box;
+  div.contents {
+    /* border: 1px solid red; */
+    width: 100%;
+    height: 100%;
+  }
+}
+.gd-drawer-header {
+  border-radius: 10px 0px 0px 0px;
+}
+
+p.gd-app-title {
+  color: white;
+  margin: 0px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: auto;
+}
+
+.gd-window-control {
+  display: flex;
+  color: white;
+  width: fit-content;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0 0 20px;
+  gap: 5px;
+  .gw-button {
+    border-radius: 100%;
+    background-color: #ffffff44;
+    height: 19px;
+    width: 19px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      height: 50%;
+      width: 50%;
+    }
+  }
+}

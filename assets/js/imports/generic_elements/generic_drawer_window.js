@@ -1,4 +1,5 @@
-export class BaseWindow {
+import { BaseWindow } from './../generic_elements/generic_window.js';
+export class BaseDrawerWindow {
   hasDefaultTitle = true;
   hasTabButton = false;
   hasSearch = false;
@@ -8,30 +9,9 @@ export class BaseWindow {
   constructor() {}
   build() {
     let genericWindow = document.createElement('div');
-    genericWindow.className = 'g-window';
-
-    let windowHeader = document.createElement('div');
-    windowHeader.className = 'window-header';
-    if (this.hasTabButton) {
-      windowHeader.appendChild(this._TabButton);
-    }
-    windowHeader.appendChild(this._appTitle);
-    if (this.hasSearch) {
-      windowHeader.appendChild(this._searchButton);
-    }
-
-    if (this.hasMenuDropdown) {
-      windowHeader.appendChild(this._menuDropdown);
-    }
-
-    windowHeader.appendChild(this._windowControlButtons);
-
-    let windowContent = document.createElement('div');
-    windowContent.className = 'window-content';
-
-    genericWindow.appendChild(windowHeader);
-    genericWindow.appendChild(windowContent);
-
+    genericWindow.className = 'gd-window';
+    genericWindow.appendChild(this._drawerElement);
+    genericWindow.appendChild(this._drawerContent);
     return genericWindow;
   }
   addTitle(title) {
@@ -51,6 +31,35 @@ export class BaseWindow {
   addMenuDropwdown() {
     this.hasMenuDropdown = true;
     return this;
+  }
+
+  get _drawerElement() {
+    let drawer = document.createElement('div');
+    drawer.className = 'gd-drawer';
+    // drawer header
+    let drawerHeader = document.createElement('div');
+    drawerHeader.className = 'gd-drawer-header';
+    drawerHeader.appendChild(this._appTitle);
+    drawer.appendChild(drawerHeader);
+    return drawer;
+  }
+  get _drawerContent() {
+    //Drawer content
+    let drawerContent = document.createElement('div');
+    drawerContent.className = 'gd-drawer-content';
+    // drawer content header
+    // space for place other elements
+    let drawerContentHeader = document.createElement('div');
+    drawerContentHeader.className = 'gd-drawer-content-header';
+    let div1 = document.createElement('div');
+    div1.className = 'contents';
+    drawerContentHeader.appendChild(div1);
+    // control buttons
+    drawerContentHeader.appendChild(this._windowControlButtons);
+
+    drawerContent.appendChild(drawerContentHeader);
+
+    return drawerContent;
   }
 
   get _TabButton() {
@@ -89,13 +98,13 @@ export class BaseWindow {
   }
   get _appTitle() {
     let pTitle = document.createElement('p');
-    pTitle.className = 'app-title';
-    pTitle.innerHTML = this.hasDefaultTitle ? 'BASE WINDOW' : this.titleContent;
+    pTitle.className = 'gd-app-title';
+    pTitle.innerHTML = this.hasDefaultTitle ? 'Drawer Window' : this.titleContent;
     return pTitle;
   }
   get _windowControlButtons() {
     let windowControl = document.createElement('div');
-    windowControl.className = 'window-control';
+    windowControl.className = 'gd-window-control';
 
     //sub buttons
     let maximize = document.createElement('div');
@@ -105,7 +114,8 @@ export class BaseWindow {
 
     maximize.onclick = function () {
       let param = this;
-      let terminal = param.parentNode.parentNode.parentNode;
+      let terminal = this.parentNode.parentNode.parentNode.parentNode;
+
       const styles = window.getComputedStyle(terminal);
 
       let initialWindowHeight = styles.getPropertyValue('--default-window-height');
@@ -136,7 +146,9 @@ export class BaseWindow {
     closeImg.src = './assets/img/terminal/close.svg';
 
     close.onclick = function () {
-      let windowApp = this.parentNode.parentNode.parentNode;
+      console.log();
+
+      let windowApp = this.parentNode.parentNode.parentNode.parentNode;
       let desktop = document.getElementById('desktop');
       desktop.removeChild(windowApp);
     };
@@ -185,15 +197,17 @@ export class BaseWindow {
       }
     };
 
-    div.querySelector('.window-header').addEventListener(
-      'mousedown',
-      function (e) {
-        moveToFront(div);
-        isDown = true;
-        offset = [div.offsetLeft - e.clientX, div.offsetTop - e.clientY];
-      },
-      true
-    );
+    div.querySelectorAll('.gd-drawer-header, .gd-drawer-content-header').forEach((element) => {
+      element.addEventListener(
+        'mousedown',
+        function (e) {
+          moveToFront(div);
+          isDown = true;
+          offset = [div.offsetLeft - e.clientX, div.offsetTop - e.clientY];
+        },
+        true
+      );
+    });
 
     document.addEventListener(
       'mouseup',
@@ -232,10 +246,10 @@ export class BaseWindow {
     let desktop = document.getElementById('desktop');
 
     desktop.appendChild(app);
-    BaseWindow._setDraggable(app);
+    BaseDrawerWindow._setDraggable(app);
   }
 }
-
+//future conflict with BaseWindow?????
 export var _positionTerminal = { top: 0, left: 0 };
 export function _getCurrentPsoition(terminal) {
   let _top = 0,
@@ -250,11 +264,11 @@ export function _getCurrentPsoition(terminal) {
   return { top: _top + 'px', left: _left + 'px' };
 }
 
-class ExampleBaseAppWindow {
+class ExampleBaseDrawerAppWindow {
   baseWindowHTML = '';
   baseWindow;
   constructor() {
-    this.baseWindow = new BaseWindow().addTitle('Base Window');
+    this.baseWindow = new BaseDrawerWindow();
     this.baseWindowHTML = this.baseWindow.build();
   }
 
@@ -263,7 +277,7 @@ class ExampleBaseAppWindow {
   }
 }
 
-export function openBaseWindow() {
-  let app = new ExampleBaseAppWindow().build();
-  BaseWindow.addToDesktop(app);
+export function openBaseDrawerWindow() {
+  let app = new ExampleBaseDrawerAppWindow().build();
+  BaseDrawerWindow.addToDesktop(app);
 }

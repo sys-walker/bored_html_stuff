@@ -2,7 +2,7 @@ import { openBaseWindow } from '../generic_elements/generic_window.js';
 import { openConsole } from '../apps/terminal/terminal-console.v3.js';
 import { openNotepad } from './../apps/notepad/notepad2.js';
 import { openMapsApp } from './../apps/maps/maps.js';
-
+import { openBaseDrawerWindow } from '../generic_elements/generic_drawer_window.js';
 export class StartMenu {
   startmenu = '';
 
@@ -26,6 +26,15 @@ export class StartMenu {
       _name: 'generic window',
       icon: './assets/icons/Suru/Suru/scalable/apps/system-settings-symbolic.svg',
       action: openBaseWindow,
+      args: [],
+    },
+    //openBaseDrawerWindow
+    {
+      category: 'config',
+      name: 'Open Empty drawer window',
+      _name: 'generic drawer window',
+      icon: './assets/icons/Suru/Suru/scalable/apps/system-settings-symbolic.svg',
+      action: openBaseDrawerWindow,
       args: [],
     },
     {
