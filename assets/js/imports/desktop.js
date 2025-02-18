@@ -1,4 +1,5 @@
-import { saveBootTime, getDate } from './os-core/system.js';
+import { LStorage } from './os-core/storage/large-storage.js';
+import { saveBootTime2, saveBootTime, getDate } from './os-core/system.js';
 
 function setDesktopClock() {
   //Load time
@@ -22,7 +23,8 @@ export function autoHideElements() {
   });
 }
 
-export function startDesktopElements() {
+export async function startDesktopElements() {
+  await LStorage.init();
   saveBootTime();
   setDesktopClock();
   autoHideElements();

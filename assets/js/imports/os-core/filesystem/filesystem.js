@@ -1,4 +1,4 @@
-import { Storage } from './../storage.js';
+import { Storage } from '../storage/storage.js';
 export class FileSystem {
   static initFS() {
     let fs = Storage.getItem('fs');

@@ -4,8 +4,8 @@ import { openNotepad } from './imports/apps/notepad/notepad2.js';
 import { openStartMenu } from './imports/startmenu/startmenu.v2.js';
 import { incrementMonth, decrementMonth, currentMonth } from './imports/apps/calendar/Calendar.js';
 
-document.body.onload = function () {
-  startDesktopElements();
+document.body.onload = async function () {
+ await startDesktopElements();
 };
 
 //calls from startmenu accessible from body HTML

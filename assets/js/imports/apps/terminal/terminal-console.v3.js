@@ -1,5 +1,5 @@
 import { BaseWindow } from '../../generic_elements/generic_window.js';
-import { Storage } from '../../os-core/storage.js';
+import { Storage } from '../../os-core/storage/storage.js';
 import { CURRENT_DIRECTORY, USER_HOME_DIRECTORY, SystemCommands } from '../../os-core/system.js';
 import { TerminalCommands } from './terminal-commands.js';
 
