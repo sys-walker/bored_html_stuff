@@ -14,17 +14,16 @@ export function saveBootTime() {
     console.debug('already sdaved boot time');
   }
 }
-// export async function saveBootTime2() {
-//   let bootTime = await LStorage.getItem('boot-time');
-
-//   if (!bootTime) {
-//     bootTime = getTimestampInSeconds();
-//     console.debug('saved boot time');
-//     return await LStorage.setItem('boot-time', bootTime);
-//   } else {
-//     console.debug('already sdaved boot time');
-//   }
-// }
+export async function saveBootTime2() {
+  //   let bootTime = await LStorage.getItem('boot-time');
+  //   if (!bootTime) {
+  //     bootTime = getTimestampInSeconds();
+  //     console.debug('saved boot time');
+  //     return await LStorage.setItem('boot-time', bootTime);
+  //   } else {
+  //     console.debug('already sdaved boot time');
+  //   }
+}
 export function getUptime() {
   let currentTime = getTimestampInSeconds();
   let bootTime = Storage.getItem('boot-time');

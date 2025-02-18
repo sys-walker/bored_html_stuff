@@ -20,7 +20,7 @@ import {
 } from '../../os-core/system.js';
 
 import { FileSystem } from '../../os-core/filesystem/filesystem.js';
-
+import { FileSystem as FileSystem2 } from '../../os-core/filesystem/filesystem.v2.js';
 export class TerminalCommands {
   static neofetch() {
     let newLine = `
@@ -67,9 +67,9 @@ export class TerminalCommands {
     return fdir;
   }
 
-  static listDirectory(fdir) {
+  static async listDirectory(fdir) {
     fdir = normalizePath(fdir);
-    let result = FileSystem.getLS(fdir);
+    let result = await FileSystem2.getLS(fdir);
     if (result.error) {
       return [
         {

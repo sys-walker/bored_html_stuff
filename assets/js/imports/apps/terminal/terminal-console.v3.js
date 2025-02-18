@@ -23,7 +23,7 @@ class TerminalConsole {
     let prompt = `${SystemCommands.getPrompt()}`;
     terminal.value = `Last login ${this.lastLoginLine}  on ttys004` + '\n' + prompt;
 
-    terminal.addEventListener('keydown', (event) => {
+    terminal.addEventListener('keydown', async (event) => {
       const lines = terminal.value.split('\n');
       const lastLine = lines[lines.length - 1];
 
@@ -34,7 +34,7 @@ class TerminalConsole {
 
       if (event.key === 'Enter') {
         event.preventDefault(); // Prevents adding a new line
-        terminal.value = this._getCommandOutput(lastLine, terminal.value);
+        terminal.value = await this._getCommandOutput(lastLine, terminal.value);
         terminal.scrollTop = terminal.scrollHeight;
       } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
         //future implementation for command history
@@ -43,7 +43,7 @@ class TerminalConsole {
     });
   }
 
-  _getCommandOutput(lastLine, currentOutput) {
+  async _getCommandOutput(lastLine, currentOutput) {
     let prompt = `${SystemCommands.getPrompt()}`;
     let cleared = false;
     // Get the command in raw format
@@ -66,7 +66,7 @@ class TerminalConsole {
         break;
       case /^ls/.test(command):
         let lsParts = command.split(' ');
-        let children = TerminalCommands.listDirectory(lsParts[1] || '.');
+        let children = await TerminalCommands.listDirectory(lsParts[1] || '.');
         children.forEach((child) => {
           let childName = child.name + (child.type === 'dir' ? '/' : '');
           response += childName + '\n';
