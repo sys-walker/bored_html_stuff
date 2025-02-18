@@ -74,10 +74,10 @@ export const N_CPU = 'none';
 export const N_GPU = 'none';
 export const N_MEMORY = 'none';
 
-export let USER_LOGGED = 'root';
-export let USER_HOME_DIRECTORY = '/root';
-export let CURRENT_DIRECTORY = '/root';
-export let USER_LOGGED_SYMBOL = '#';
+export let USER_LOGGED = 'user';
+export let USER_HOME_DIRECTORY = `/home/${USER_LOGGED}`;
+export let CURRENT_DIRECTORY = `/home/${USER_LOGGED}`;
+export let USER_LOGGED_SYMBOL = '$';
 
 export function normalizePath(path) {
   if (path === '/') return '/';

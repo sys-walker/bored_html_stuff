@@ -12,6 +12,34 @@ export class FileSystem {
         ],
         type: 'dir',
       },
+      {
+        name: 'home',
+        children: [
+          {
+            name: 'user',
+            children: [
+              {
+                name: 'Documents',
+                children: [
+                  {
+                    name: 'lipsum.txt',
+                    content: `Lorem Ipsum is simply dummy text of the printing and typesetting \nindustry. Lorem Ipsum has been the industry's standard dummy \ntext ever since the 1500s, when an unknown printer took a galley \nof type and scrambled it to make a type specimen book. It has \nsurvived not only five centuries, but also the leap into electronic \ntypesetting, remaining essentially unchanged. It was popularised in \nthe 1960s with the release of Letraset sheets containing Lorem \nIpsum passages, and more recently with desktop publishing \nsoftware like Aldus PageMaker including versions of Lorem Ipsum.`,
+                    type: 'file',
+                  },
+                ],
+                type: 'dir',
+              },
+              { name: 'Downloads', children: [], type: 'dir' },
+              { name: 'Music', children: [], type: 'dir' },
+              { name: 'Pictures', children: [], type: 'dir' },
+              { name: 'Videos', children: [], type: 'dir' },
+              { name: 'Trash', children: [], type: 'dir' },
+            ],
+            type: 'dir',
+          },
+        ],
+        type: 'dir',
+      },
       { name: 'tmp', children: [], type: 'dir' },
     ];
     if (!fs) {
