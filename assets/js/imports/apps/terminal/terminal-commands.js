@@ -20,6 +20,7 @@ import {
 } from '../../os-core/system.js';
 
 import { FileSystem } from '../../os-core/filesystem/filesystem.v2.js';
+import { TinyStorage } from '../../os-core/storage/light-storage.js';
 export class TerminalCommands {
   static neofetch() {
     let newLine = `
@@ -129,5 +130,70 @@ export class TerminalCommands {
     let fdir = normalizePath(fname);
     let result = await FileSystem.createDirectory(fdir);
     return result.message;
+  }
+}
+export class TerminalHistory {
+  static commands = [];
+  static lastIndex = 0;
+
+  static initHistory() {
+    let hl = TinyStorage.getItem('shell-history');
+
+    
+    if (!hl) {
+      let initialHistory = ['help'];
+      TinyStorage.setItem('shell-history', initialHistory);
+      TerminalHistory.commands = initialHistory;
+      TerminalHistory.lastIndex = initialHistory.length;
+    } else {
+      TerminalHistory.commands = hl;
+    
+    }
+  }
+
+  static get previous() {
+    TerminalHistory.initHistory();
+
+
+    TerminalHistory.lastIndex = TerminalHistory.lastIndex - 1;
+
+    if (TerminalHistory.lastIndex < 0) {
+      TerminalHistory.lastIndex = 0;
+    }
+
+    let m = TerminalHistory.commands.reduce((result, currentVal, index, arr) => {
+      let s = index == TerminalHistory.lastIndex ? '[' + currentVal + ']' : currentVal;
+      return result + ' ' + s + ' ';
+    }, '');
+
+    console.log(m, TerminalHistory.lastIndex);
+    return TerminalHistory.commands[TerminalHistory.lastIndex];
+  }
+
+  static get next() {
+    TerminalHistory.initHistory();
+    TerminalHistory.lastIndex = TerminalHistory.lastIndex + 1;
+    if (TerminalHistory.lastIndex >= TerminalHistory.commands.length) {
+      TerminalHistory.lastIndex = TerminalHistory.commands.length - 1;
+    }
+
+    let m = TerminalHistory.commands.reduce((result, currentVal, index, arr) => {
+      let s = index == TerminalHistory.lastIndex ? '[' + currentVal + ']' : currentVal;
+      return result + ' ' + s + ' ';
+    }, '');
+    console.log(m, TerminalHistory.lastIndex);
+    return TerminalHistory.commands[TerminalHistory.lastIndex];
+  }
+
+  static addCommand(command) {
+    TerminalHistory.initHistory();
+    TerminalHistory.commands.push(command);
+    TinyStorage.setItem('shell-history', TerminalHistory.commands);
+    TerminalHistory.lastIndex = TerminalHistory.commands.length -1;
+  }
+  static resetHistory(){
+    TinyStorage.removeItem('shell-history');
+    TerminalHistory.commands = [];
+    TerminalHistory.lastIndex = 0;
   }
 }

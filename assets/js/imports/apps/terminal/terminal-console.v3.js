@@ -1,7 +1,7 @@
 import { BaseWindow } from '../../generic_elements/generic_window.js';
 import { TinyStorage } from '../../os-core/storage/light-storage.js';
 import { CURRENT_DIRECTORY, USER_HOME_DIRECTORY, SystemCommands } from '../../os-core/system.js';
-import { TerminalCommands } from './terminal-commands.js';
+import { TerminalCommands, TerminalHistory } from './terminal-commands.js';
 
 class TerminalConsole {
   baseWindowHTML = '';
@@ -16,6 +16,7 @@ class TerminalConsole {
     this.baseWindowHTML.classList.add('terminal-console');
     let windowContent = this.baseWindowHTML.querySelector('.window-content');
     windowContent.appendChild(this.terminalConsoleEl);
+    TerminalHistory.resetHistory();
     return this.baseWindowHTML;
   }
 
@@ -39,6 +40,20 @@ class TerminalConsole {
       } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
         //future implementation for command history
         event.preventDefault();
+
+        let replaceLine = '';
+        let currentOutput = terminal.value.split('\n');
+
+        if (event.key === 'ArrowUp') {
+          replaceLine = `${SystemCommands.getPrompt()}` + TerminalHistory.previous;
+        } else {
+          replaceLine = `${SystemCommands.getPrompt()}` + TerminalHistory.next;
+        }
+        console.log(replaceLine);
+
+        currentOutput[currentOutput.length - 1] = replaceLine;
+
+        terminal.value = currentOutput.join('\n');
       }
     });
   }
@@ -147,6 +162,10 @@ class TerminalConsole {
       default:
         response = `esh: command not found: ${command}`;
         break;
+    }
+
+    if (command !== '') {
+      TerminalHistory.addCommand(command);
     }
     //checks if the prompt changed
     prompt = `${SystemCommands.getPrompt()}`;
